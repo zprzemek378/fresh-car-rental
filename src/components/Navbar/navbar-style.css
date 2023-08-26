@@ -1,0 +1,18 @@
+.navbar-main {
+  display: block;
+
+  @media (min-width: 680px) {
+    display: flex;
+  }
+}
+
+.navbar-item {
+  @media (min-width: 680px) {
+    background-color: transparent;
+    flex: 1 1 0%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

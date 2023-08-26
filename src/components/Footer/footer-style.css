@@ -1,0 +1,17 @@
+.footer-main {
+  height: 50px;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
+  border-top: 2px solid rgb(169, 0, 0);
+  display: flex;
+}
+
+.footer-element {
+  margin: auto;
+}
+
+.footer-link:hover {
+  font-weight: 800;
+  color: white;
+}

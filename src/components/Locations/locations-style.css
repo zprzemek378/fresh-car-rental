@@ -1,0 +1,52 @@
+th,
+td {
+  border: 2px solid black;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+tr {
+  cursor: pointer;
+}
+
+tr:hover {
+  opacity: 60%;
+}
+
+.tr0 {
+  background-color: rgb(228, 228, 228);
+}
+
+table {
+  width: 530px;
+  min-width: 530px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.map-container {
+  border: 2px solid black;
+  width: 534px;
+  height: 534px;
+  margin-left: auto;
+  margin-right: auto;
+  @media (max-width: 1199px) {
+    margin-top: 15px;
+  }
+}
+
+.leaflet-container {
+  height: 530px;
+  width: 530px;
+}
+
+.table-and-map {
+  margin-top: 15px;
+  display: block;
+  @media (min-width: 1200px) {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}
