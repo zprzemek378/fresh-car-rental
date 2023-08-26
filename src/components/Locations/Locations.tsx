@@ -25,7 +25,7 @@ const Locations = () => {
   };
 
   useEffect(() => {
-    fetch("/data/db.json").then((res) => console.log(res));
+    fetch("/fresh-car-rental/data/db.json").then((res) => console.log(res));
     // .then((data) => fetchedData(data.places));
   }, []);
 
