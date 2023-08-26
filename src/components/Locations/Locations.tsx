@@ -25,8 +25,9 @@ const Locations = () => {
   };
 
   useEffect(() => {
-    fetch("/fresh-car-rental/data/db.json").then((res) => console.log(res));
-    // .then((data) => fetchedData(data.places));
+    fetch("/fresh-car-rental/data/db.json")
+      .then((res) => res.json())
+      .then((data) => fetchedData(data.places));
   }, []);
 
   interface ICenter extends Array<number> {
