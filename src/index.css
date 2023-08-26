@@ -4,9 +4,9 @@
 
 @import url("../node_modules/@fontsource/poppins/");
 
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 html,
 body {
@@ -18,10 +18,9 @@ body {
 }
 
 .main-container {
-  width: 100%;
 }
 
-.App {
+.App-main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;

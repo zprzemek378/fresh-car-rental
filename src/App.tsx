@@ -11,17 +11,30 @@ import Vehicles from "./components/Vehicles/Vehicles";
 import Locations from "./components/Locations/Locations";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
+import { useState } from "react";
 
 function App() {
-  // fetch("/data/db.json")
-  //   .then((res) => res.json())
-  //   .then((data) => console.log(data));
+  const [currWidth, setCurrWidth] = useState(1);
+
+  window.addEventListener("resize", () => {
+    setCurrWidth(window.innerWidth);
+  });
+
+  // useEffect(
+  //   () => setCurrWidth(window.matchMedia("(min-width").matches),
+  //   []
+  // );
 
   return (
     // <HashRouter>
-    <div className="App">
+    <div className="App App-main">
       <Navbar />
-      <div className="main-container">
+      <div
+        className="main-container"
+        style={{
+          zoom: currWidth < 640 ? `${(currWidth * 100) / 640}%` : "100%",
+        }}
+      >
         <div className="mt-5 mb-5 ml-10 mr-10">
           <Routes>
             <Route path="/" element={<Home />} />
