@@ -1,4 +1,9 @@
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter as Router,
+  HashRouter,
+} from "react-router-dom";
 import Home from "./components/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Rent from "./components/Rent/Rent";
@@ -13,23 +18,23 @@ function App() {
   //   .then((data) => console.log(data));
 
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <div className="main-container">
-          <div className="mt-5 mb-5 ml-10 mr-10">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/rent" element={<Rent />} />
-              <Route path="/vehicles" element={<Vehicles />} />
-              <Route path="/locations" element={<Locations />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </div>
+    // <HashRouter>
+    <div className="App">
+      <Navbar />
+      <div className="main-container">
+        <div className="mt-5 mb-5 ml-10 mr-10">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/rent" element={<Rent />} />
+            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/locations" element={<Locations />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
         </div>
-        <Footer />
       </div>
-    </Router>
+      <Footer />
+    </div>
+    // </HashRouter>
   );
 }
 
