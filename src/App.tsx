@@ -11,7 +11,7 @@ import Vehicles from "./components/Vehicles/Vehicles";
 import Locations from "./components/Locations/Locations";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [currWidth, setCurrWidth] = useState(1);
@@ -20,10 +20,7 @@ function App() {
     setCurrWidth(window.innerWidth);
   });
 
-  // useEffect(
-  //   () => setCurrWidth(window.matchMedia("(min-width").matches),
-  //   []
-  // );
+  useEffect(() => setCurrWidth(window.innerWidth), []);
 
   return (
     // <HashRouter>
