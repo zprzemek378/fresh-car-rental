@@ -31,10 +31,16 @@ const ShowAvailability: React.FC<ShowAvailabilityProps> = ({
       />
       {showInfo && (
         <div className="showAvailabilityInfo text-left text-sm font-bold">
-          This vehicle is currently available in:
-          {availability.map((place) => (
-            <li className=" font-normal">{place.city}</li>
-          ))}
+          {availability.length > 0 ? (
+            <div>
+              This vehicle is currently available in:
+              {availability.map((place) => (
+                <li className=" font-normal">{place.city}</li>
+              ))}{" "}
+            </div>
+          ) : (
+            <div>This vehicle is currently unavailable</div>
+          )}
         </div>
       )}
     </div>
