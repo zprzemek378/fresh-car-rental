@@ -1,0 +1,60 @@
+.vehiclesContainer {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.truckComponent {
+  margin: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 2px;
+  padding-right: 7px;
+  min-width: 300px;
+  height: 90px;
+  background-color: rgb(235, 235, 235);
+  border-radius: 5px;
+  box-shadow: 1px 1px 4px -2px black;
+
+  flex: 1;
+  display: flex;
+
+  transition: height 0.5s;
+}
+
+.truckComponent-details {
+  height: 200px;
+}
+
+.truckImage {
+  height: 80px;
+  align-self: center;
+}
+
+.primaryInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: auto;
+  text-align: right;
+}
+
+.expandMore {
+  rotate: 0;
+  transition: rotate 0.5s;
+}
+
+.expandMore-details {
+  rotate: 180deg;
+}
+
+.showAvailabilityInfo {
+  position: fixed;
+  width: 270px;
+  translate: -250px 3px;
+  background-color: rgb(192, 192, 192);
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 4px;
+  z-index: 9990;
+}

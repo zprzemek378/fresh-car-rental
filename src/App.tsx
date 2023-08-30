@@ -14,6 +14,58 @@ import Footer from "./components/Footer/Footer";
 import { useState, useEffect } from "react";
 
 function App() {
+  //Fetching data
+  interface IPlace {
+    id: number;
+    city: string;
+    address: string;
+    phonenumber: number;
+    latlng: [number, number];
+  }
+  interface IPlaces extends Array<IPlace> {}
+
+  interface IVehicle {
+    id: number;
+    brand: string;
+    model: string;
+    horsepower: number;
+    color: string;
+    available: number[];
+    tank: number;
+    price: number;
+  }
+  interface IVehicles extends Array<IVehicle> {}
+
+  const [places, setPlaces] = useState<IPlaces>([]);
+
+  const [vehicles, setVehicles] = useState<IVehicles>([]);
+
+  const fetchedPlacesData = (data: IPlaces) => {
+    setPlaces(data);
+  };
+
+  const fetchedTrucksData = (data: IVehicles) => {
+    setVehicles(data);
+  };
+
+  const [fetchedData, setFetchedData] = useState(false);
+
+  useEffect(() => {
+    fetch("/fresh-car-rental/data/db.json")
+      .then((res) => res.json())
+      .then((data) => {
+        fetchedPlacesData(data.places);
+        fetchedTrucksData(data.trucks);
+        setFetchedData(true);
+      });
+  }, []);
+
+  interface ICenter extends Array<number> {
+    0: number;
+    1: number;
+  }
+
+  //Resizing
   const [currWidth, setCurrWidth] = useState(1);
 
   window.addEventListener("resize", () => {
@@ -29,15 +81,32 @@ function App() {
       <div
         className="main-container"
         style={{
-          zoom: currWidth < 640 ? `${(currWidth * 100) / 640}%` : "100%",
+          zoom:
+            currWidth < 640
+              ? `${(currWidth * 100) / 640}%`
+              : currWidth > 1230
+              ? `${(currWidth * 100) / 1230}%`
+              : "100%",
         }}
       >
         <div className="mt-5 mb-5 ml-10 mr-10">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rent" element={<Rent />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/locations" element={<Locations />} />
+            <Route
+              path="/vehicles"
+              element={
+                <Vehicles
+                  vehicles={vehicles}
+                  fetchedData={fetchedData}
+                  places={places}
+                />
+              }
+            />
+            <Route
+              path="/locations"
+              element={<Locations places={places} fetchedData={fetchedData} />}
+            />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </div>

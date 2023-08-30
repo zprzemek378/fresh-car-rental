@@ -6,34 +6,27 @@ import "leaflet/dist/leaflet.css";
 import MarkerComp from "./MarkerComp";
 import ChangeLocation from "./ChangeLocation";
 
-const Locations = () => {
-  // Fetching locations data
-  interface IPlace {
+interface LocationsProps {
+  places: {
     id: number;
     city: string;
     address: string;
     phonenumber: number;
     latlng: [number, number];
-  }
-  interface IPlaces extends Array<IPlace> {}
+  }[];
 
-  const [places, setPlaces] = useState<IPlaces>([]);
+  fetchedData: boolean;
+}
 
-  const fetchedData = (data: IPlaces) => {
-    setPlaces(data);
-    setLatlngCenter([data[0].latlng[0], data[0].latlng[1]]);
-  };
-
-  useEffect(() => {
-    fetch("/fresh-car-rental/data/db.json")
-      .then((res) => res.json())
-      .then((data) => fetchedData(data.places));
-  }, []);
-
+const Locations: React.FC<LocationsProps> = ({ places, fetchedData }) => {
   interface ICenter extends Array<number> {
     0: number;
     1: number;
   }
+
+  useEffect(() => {
+    fetchedData && setLatlngCenter([places[0].latlng[0], places[0].latlng[1]]);
+  }, [fetchedData]);
 
   // Change place dynamically
 
@@ -75,7 +68,7 @@ const Locations = () => {
                       setLatlngCenter([place.latlng[0], place.latlng[1]])
                     }
                   >
-                    {place.phonenumber}
+                    +{place.phonenumber}
                   </td>
                 </tr>
               ))}

@@ -45,8 +45,7 @@ const MarkerComp: React.FC<MarkerCompProps> = ({
 
           <div className="flex text-center">
             <Phone />
-            &nbsp;
-            {popup3}
+            &nbsp; +{popup3}
           </div>
         </Popup>
       </Marker>
