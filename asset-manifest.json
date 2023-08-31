@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/fresh-car-rental/static/css/main.83bb2577.css",
-    "main.js": "/fresh-car-rental/static/js/main.76738d12.js",
+    "main.css": "/fresh-car-rental/static/css/main.89dd12a7.css",
+    "main.js": "/fresh-car-rental/static/js/main.304526c9.js",
     "static/js/787.42d42d87.chunk.js": "/fresh-car-rental/static/js/787.42d42d87.chunk.js",
     "static/media/poppins-devanagari-400-normal.woff": "/fresh-car-rental/static/media/poppins-devanagari-400-normal.0e11b62db931f85340d4.woff",
     "static/media/poppins-devanagari-400-normal.woff2": "/fresh-car-rental/static/media/poppins-devanagari-400-normal.64d5f06ee726edd58ca3.woff2",
@@ -10,12 +10,12 @@
     "static/media/poppins-latin-ext-400-normal.woff": "/fresh-car-rental/static/media/poppins-latin-ext-400-normal.8cc52669c8e8a6735699.woff",
     "static/media/poppins-latin-ext-400-normal.woff2": "/fresh-car-rental/static/media/poppins-latin-ext-400-normal.4f38b4331448d2313adc.woff2",
     "index.html": "/fresh-car-rental/index.html",
-    "main.83bb2577.css.map": "/fresh-car-rental/static/css/main.83bb2577.css.map",
-    "main.76738d12.js.map": "/fresh-car-rental/static/js/main.76738d12.js.map",
+    "main.89dd12a7.css.map": "/fresh-car-rental/static/css/main.89dd12a7.css.map",
+    "main.304526c9.js.map": "/fresh-car-rental/static/js/main.304526c9.js.map",
     "787.42d42d87.chunk.js.map": "/fresh-car-rental/static/js/787.42d42d87.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.83bb2577.css",
-    "static/js/main.76738d12.js"
+    "static/css/main.89dd12a7.css",
+    "static/js/main.304526c9.js"
   ]
 }
