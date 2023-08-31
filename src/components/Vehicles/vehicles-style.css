@@ -1,3 +1,46 @@
+.sortContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sortElement {
+  height: 32px;
+  flex: 1;
+  margin: 3px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid red;
+  border-radius: 4px;
+  background-color: rgb(255, 224, 224);
+}
+
+@media (max-width: 980px) {
+  .sortElement {
+    flex-basis: calc(25% - 6px); /* 4 elements per row */
+  }
+}
+
+@media (max-width: 660px) {
+  .sortElement {
+    flex-basis: calc(50% - 6px); /* 2 elements per row */
+  }
+}
+
+.sortElement:hover {
+  background-color: rgb(255, 91, 91);
+}
+
+.sortElement-highlight {
+  color: white;
+  background-color: rgb(91, 74, 74);
+  border: 2px solid black;
+}
+
+.sortElement-highlight:hover {
+  background-color: rgb(154, 80, 80);
+}
+
 .vehiclesContainer {
   margin-top: 15px;
   display: flex;
@@ -49,7 +92,7 @@
 }
 
 .showAvailabilityInfo {
-  position: fixed;
+  position: absolute;
   width: 270px;
   translate: -250px 3px;
   background-color: rgb(192, 192, 192);
