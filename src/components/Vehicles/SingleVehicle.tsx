@@ -72,14 +72,14 @@ const SingleVehicle: React.FC<SingleVehicleProps> = ({
               <span className="font-bold mr-auto"> Available in: </span>
               &nbsp;&nbsp;
               <span>
-                <ShowAvailability availability={availability} />
+                <ShowAvailability availability={availability} type={"truck"} />
               </span>
             </div>
           </div>
         )}
         <div className="flex ml-auto">
           <p className=" text-red-500">
-            <span className=" font-bold">{truck.price}$</span>/day
+            <span className=" font-bold">${truck.price}</span>/day
           </p>
           <span className="ml-3 text-lg scale-150 mt-1">
             <MdExpandMore

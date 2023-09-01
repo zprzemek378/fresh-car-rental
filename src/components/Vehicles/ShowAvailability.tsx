@@ -9,10 +9,13 @@ interface ShowAvailabilityProps {
     phonenumber: number;
     latlng: [number, number];
   }[];
+
+  type: string;
 }
 
 const ShowAvailability: React.FC<ShowAvailabilityProps> = ({
   availability,
+  type,
 }) => {
   const [showInfo, setShowInfo] = useState(false);
   const onPointerEnter = () => {
@@ -33,13 +36,13 @@ const ShowAvailability: React.FC<ShowAvailabilityProps> = ({
         <div className="showAvailabilityInfo text-left text-sm font-bold">
           {availability.length > 0 ? (
             <div>
-              This vehicle is currently available in:
+              This {type} is currently available in:
               {availability.map((place) => (
                 <li className=" font-normal ml-3">{place.city}</li>
               ))}
             </div>
           ) : (
-            <div>This vehicle is currently unavailable</div>
+            <div>This {type} is currently unavailable</div>
           )}
         </div>
       )}

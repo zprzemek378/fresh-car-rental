@@ -36,16 +36,28 @@ function App() {
   }
   interface IVehicles extends Array<IVehicle> {}
 
-  const [places, setPlaces] = useState<IPlaces>([]);
+  interface ITrailer {
+    id: number;
+    name: string;
+    cargo: string;
+    length: number[];
+    available: number[][];
+    price: number[];
+  }
+  interface ITrailers extends Array<ITrailer> {}
 
+  const [places, setPlaces] = useState<IPlaces>([]);
   const [vehicles, setVehicles] = useState<IVehicles>([]);
+  const [trailers, setTrailers] = useState<ITrailers>([]);
 
   const fetchedPlacesData = (data: IPlaces) => {
     setPlaces(data);
   };
-
   const fetchedTrucksData = (data: IVehicles) => {
     setVehicles(data);
+  };
+  const fetchedTrailersData = (data: ITrailers) => {
+    setTrailers(data);
   };
 
   const [fetchedData, setFetchedData] = useState(false);
@@ -56,6 +68,7 @@ function App() {
       .then((data) => {
         fetchedPlacesData(data.places);
         fetchedTrucksData(data.trucks);
+        fetchedTrailersData(data.trailers);
         setFetchedData(true);
       });
   }, []);
@@ -100,6 +113,7 @@ function App() {
                   vehicles={vehicles}
                   fetchedData={fetchedData}
                   places={places}
+                  trailers={trailers}
                 />
               }
             />

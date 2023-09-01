@@ -70,8 +70,9 @@
 }
 
 .truckImage {
-  height: 80px;
+  max-height: 80px;
   align-self: center;
+  max-width: 110px;
 }
 
 .primaryInfo {
@@ -100,4 +101,37 @@
   border: 2px solid black;
   border-radius: 4px;
   z-index: 9990;
+}
+
+.chooseContainer {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 300px;
+}
+
+.chooseElement {
+  flex: 1;
+  text-align: center;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 2px solid red;
+  background-color: rgb(255, 224, 224);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chooseElement:hover {
+  background-color: rgb(255, 91, 91);
+}
+
+.chooseElement-highlight {
+  color: white;
+  background-color: rgb(91, 74, 74);
+  border: 2px solid black;
+}
+
+.chooseElement-highlight:hover {
+  background-color: rgb(154, 80, 80);
 }

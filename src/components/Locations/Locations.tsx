@@ -43,7 +43,7 @@ const Locations: React.FC<LocationsProps> = ({ places, fetchedData }) => {
           {places.length === 0 ? (
             <p>Loading...</p>
           ) : (
-            <div>
+            <div className="tableContainer">
               <th>City</th>
               <th>Street</th>
               <th>Phone number</th>

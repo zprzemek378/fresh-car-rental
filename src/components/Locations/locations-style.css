@@ -7,6 +7,11 @@ td {
   padding-bottom: 5px;
 }
 
+.tableContainer {
+  border: 2px solid black;
+  border-radius: 4px;
+}
+
 tr {
   cursor: pointer;
 }
@@ -20,16 +25,17 @@ tr:hover {
 }
 
 table {
-  width: 530px;
-  min-width: 530px;
+  /* width: 530px; */
+  /* min-width: 530px; */
   margin-left: auto;
   margin-right: auto;
 }
 
 .map-container {
-  border: 2px solid black;
-  width: 534px;
-  height: 534px;
+  border: 4px solid black;
+  border-radius: 4px;
+  width: 538px;
+  height: 538px;
   margin-left: auto;
   margin-right: auto;
   @media (max-width: 1199px) {
@@ -40,6 +46,7 @@ table {
 .leaflet-container {
   height: 530px;
   width: 530px;
+  border-radius: 4px;
 }
 
 .table-and-map {
