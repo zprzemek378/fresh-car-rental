@@ -2,6 +2,8 @@ import "./rent-style.css";
 
 import { GrSearch } from "react-icons/gr";
 import { IconContext } from "react-icons";
+import VehicleType from "./VehicleType";
+import { useState } from "react";
 
 interface RentProps {
   vehicles: {
@@ -41,42 +43,152 @@ const Rent: React.FC<RentProps> = ({
   fetchedData,
   trailers,
 }) => {
-  const date = new Date();
-  const usableDate = {
-    year: String(date.getFullYear()),
-    month:
-      date.getMonth() + 1 < 10
-        ? "0" + String(date.getMonth() + 1)
-        : String(date.getMonth() + 1),
-    day:
-      date.getDate() < 10
-        ? "0" + String(date.getDate())
-        : String(date.getDate()),
-    hours:
-      date.getHours() < 10
-        ? "0" + String(date.getHours())
-        : String(date.getHours()),
-    minutes:
-      date.getMinutes() < 10
-        ? "0" + String(date.getMinutes())
-        : String(date.getMinutes()),
+  // Current Date&Time
+  const currentDate = new Date();
+  interface IusableDate {
+    year: string;
+    month: string;
+    day: string;
+    hours: string;
+    minutes: string;
+  }
+  const usableDate = (date: Date): IusableDate => {
+    console.log(date.getTimezoneOffset(), date);
+
+    // const date = new Date(
+    //   oldDate.getTime() - oldDate.getTimezoneOffset() * 60000
+    // );
+    return {
+      year: String(date.getFullYear()),
+      month:
+        date.getMonth() + 1 < 10
+          ? "0" + String(date.getMonth() + 1)
+          : String(date.getMonth() + 1),
+      day:
+        date.getDate() < 10
+          ? "0" + String(date.getDate())
+          : String(date.getDate()),
+      hours:
+        date.getHours() < 10
+          ? "0" + String(date.getHours())
+          : String(date.getHours()),
+      minutes:
+        date.getMinutes() < 10
+          ? "0" + String(date.getMinutes())
+          : String(date.getMinutes()),
+    };
+  };
+
+  // Getting form data
+  const [pickupLocation, setPickupLocation] = useState<number>(0);
+  const [pickupDate, setPickupDate] = useState<IusableDate | null>(
+    usableDate(currentDate)
+  );
+  const [pickupTime, setPickupTime] = useState<IusableDate | null>(
+    usableDate(currentDate)
+  );
+  const [dropoffLocation, setDropoffLocation] = useState<number>(0);
+  const [dropoffDate, setDropoffDate] = useState<IusableDate | null>(
+    usableDate(currentDate)
+  );
+  const [dropoffTime, setDropoffTime] = useState<IusableDate | null>(
+    usableDate(currentDate)
+  );
+
+  const setDate = (e: any, isPickup: boolean): void => {
+    if (isPickup) {
+      if (e.target.valueAsDate) setPickupDate(usableDate(e.target.valueAsDate));
+      else setPickupDate(null);
+    } else {
+      if (e.target.valueAsDate)
+        setDropoffDate(usableDate(e.target.valueAsDate));
+      else setDropoffDate(null);
+    }
+  };
+
+  const setTime = (e: any, isPickup: boolean): void => {
+    if (isPickup) {
+      if (e.target.valueAsDate) setPickupTime(usableDate(e.target.valueAsDate));
+      else setPickupTime(null);
+    } else {
+      if (e.target.valueAsDate)
+        setDropoffTime(usableDate(e.target.valueAsDate));
+      else setDropoffTime(null);
+    }
+  };
+
+  interface IOrder {
+    pickup: {
+      location: number;
+      date: {
+        year: number;
+        month: number;
+        day: number;
+        hours: number;
+        minutes: number;
+      };
+    };
+    dropoff: {
+      location: number;
+      date: {
+        year: number;
+        month: number;
+        day: number;
+        hours: number;
+        minutes: number;
+      };
+    };
+  }
+
+  const onSearch = (e: any) => {
+    e.preventDefault();
+    if (pickupDate && dropoffDate && pickupTime && dropoffTime) {
+      const order: IOrder = {
+        pickup: {
+          location: pickupLocation,
+          date: {
+            year: Number(pickupDate.year),
+            month: Number(pickupDate.month),
+            day: Number(pickupDate.day),
+            hours: Number(pickupTime.hours),
+            minutes: Number(pickupTime.minutes),
+          },
+        },
+        dropoff: {
+          location: dropoffLocation,
+          date: {
+            year: Number(dropoffDate.year),
+            month: Number(dropoffDate.month),
+            day: Number(dropoffDate.day),
+            hours: Number(dropoffTime.hours),
+            minutes: Number(dropoffTime.minutes),
+          },
+        },
+      };
+      console.log(order);
+    }
   };
 
   return (
     <div>
       <h1 className="text-2xl font-semibold">Rent a vehicle</h1>
-      <form>
+      <form onSubmit={(e) => onSearch(e)}>
         <div className="formFirstContainer">
           <div className="tripleContainer">
             <div className="formElement">
               <label>Pick-up location</label>
               <br />
-              <select className="selectElement">
+              <select
+                className="selectElement"
+                onChange={(e) =>
+                  setPickupLocation(Number(e.currentTarget.value))
+                }
+              >
                 <option selected disabled>
                   From where?
                 </option>
                 {places.map((place, key) => (
-                  <option>{place.city}</option>
+                  <option value={place.id}>{place.city}</option>
                 ))}
               </select>
             </div>
@@ -86,7 +198,10 @@ const Rent: React.FC<RentProps> = ({
               <input
                 className="selectElement"
                 type="date"
-                value={`${usableDate.year}-${usableDate.month}-${usableDate.day}`}
+                defaultValue={`${usableDate(currentDate).year}-${
+                  usableDate(currentDate).month
+                }-${usableDate(currentDate).day}`}
+                onChange={(e) => setDate(e, true)}
               />
             </div>
             <div className="formElement">
@@ -95,7 +210,10 @@ const Rent: React.FC<RentProps> = ({
               <input
                 className="selectElement"
                 type="time"
-                value={`${usableDate.hours}:${usableDate.minutes}`}
+                defaultValue={`${usableDate(currentDate).hours}:${
+                  usableDate(currentDate).minutes
+                }`}
+                onChange={(e) => setTime(e, true)}
               />
             </div>
           </div>
@@ -103,12 +221,17 @@ const Rent: React.FC<RentProps> = ({
             <div className="formElement">
               <label>Drop-off location</label>
               <br />
-              <select className="selectElement">
+              <select
+                className="selectElement"
+                onChange={(e) =>
+                  setDropoffLocation(Number(e.currentTarget.value))
+                }
+              >
                 <option selected disabled>
                   To where?
                 </option>
                 {places.map((place, key) => (
-                  <option>{place.city}</option>
+                  <option value={place.id}>{place.city}</option>
                 ))}
               </select>
             </div>
@@ -118,7 +241,10 @@ const Rent: React.FC<RentProps> = ({
               <input
                 className="selectElement"
                 type="date"
-                value={`${usableDate.year}-${usableDate.month}-${usableDate.day}`}
+                defaultValue={`${usableDate(currentDate).year}-${
+                  usableDate(currentDate).month
+                }-${usableDate(currentDate).day}`}
+                onChange={(e) => setDate(e, false)}
               />
             </div>
             <div className="formElement">
@@ -127,7 +253,10 @@ const Rent: React.FC<RentProps> = ({
               <input
                 className="selectElement"
                 type="time"
-                value={`${usableDate.hours}:${usableDate.minutes}`}
+                defaultValue={`${usableDate(currentDate).hours}:${
+                  usableDate(currentDate).minutes
+                }`}
+                onChange={(e) => setTime(e, false)}
               />
             </div>
           </div>
@@ -181,7 +310,9 @@ const Rent: React.FC<RentProps> = ({
         </div>
       </form>
 
-      <div className="secondFormContainer"></div>
+      <div className="secondFormContainer">
+        <VehicleType vehicles={vehicles} fetchedData={fetchedData} />
+      </div>
     </div>
   );
 };
