@@ -105,7 +105,17 @@ function App() {
         <div className="mt-5 mb-5 ml-10 mr-10">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/rent" element={<Rent />} />
+            <Route
+              path="/rent"
+              element={
+                <Rent
+                  vehicles={vehicles}
+                  fetchedData={fetchedData}
+                  places={places}
+                  trailers={trailers}
+                />
+              }
+            />
             <Route
               path="/vehicles"
               element={
