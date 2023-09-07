@@ -62,11 +62,15 @@
   flex: 1;
   display: flex;
 
-  transition: height 0.5s;
+  transition: height 0.5s, background-color 0.3s;
 }
 
 .truckComponent-details {
   height: 200px;
+}
+
+.truckComponent-onpoint {
+  background-color: rgb(235, 220, 220);
 }
 
 .truckImage {

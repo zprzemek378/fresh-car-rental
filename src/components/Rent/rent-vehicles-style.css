@@ -1,0 +1,44 @@
+.selectMainContainer {
+  width: 27px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.selectContainer {
+  position: relative;
+  left: -23px;
+
+  transition: left 0.5s;
+}
+
+.selectContainer-details {
+  left: -79px;
+}
+
+.selectButton {
+  transform: rotate(90deg);
+  background-color: red;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 3px;
+  font-weight: 700;
+
+  transition: padding-left 0.5s, padding-right 0.5s;
+}
+
+.selectButton-details {
+  padding-left: 68px;
+  padding-right: 68px;
+}
+
+.selectButton:hover {
+  background-color: rgb(83, 38, 38);
+  color: white;
+}
+
+.trailer-unavailable {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: black;
+  filter: brightness(50%);
+}

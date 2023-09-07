@@ -35,9 +35,17 @@ const SingleVehicle: React.FC<SingleVehicleProps> = ({
 
   useEffect(() => setShowDetails(false), [collapse]);
 
+  const [pointingOnComponent, setPointingOnComponent] =
+    useState<boolean>(false);
+
   return (
     <div
-      className={`truckComponent ${showDetails && "truckComponent-details"}`}
+      className={`truckComponent
+    ${showDetails && "truckComponent-details"}
+    ${pointingOnComponent && "truckComponent-onpoint"}
+    `}
+      onPointerLeave={() => setPointingOnComponent(false)}
+      onPointerOver={() => setPointingOnComponent(true)}
     >
       <img
         className="truckImage"

@@ -1,11 +1,14 @@
 import "./rent-style.css";
+import "./rent-vehicles-style.css";
+import "../Vehicles/vehicles-style.css";
 
-import { GrSearch } from "react-icons/gr";
-import { IconContext } from "react-icons";
-import VehicleType from "./VehicleType";
 import { useState } from "react";
+import { GrSearch } from "react-icons/gr";
+import VehicleType from "./VehicleType";
+import TrailerType from "./TrailerType";
+import ChooseWindow from "./ChooseWindow";
 
-interface RentProps {
+export interface RentProps {
   vehicles: {
     id: number;
     brand: string;
@@ -53,11 +56,6 @@ const Rent: React.FC<RentProps> = ({
     minutes: string;
   }
   const usableDate = (date: Date): IusableDate => {
-    console.log(date.getTimezoneOffset(), date);
-
-    // const date = new Date(
-    //   oldDate.getTime() - oldDate.getTimezoneOffset() * 60000
-    // );
     return {
       year: String(date.getFullYear()),
       month:
@@ -84,36 +82,29 @@ const Rent: React.FC<RentProps> = ({
   const [pickupDate, setPickupDate] = useState<IusableDate | null>(
     usableDate(currentDate)
   );
-  const [pickupTime, setPickupTime] = useState<IusableDate | null>(
-    usableDate(currentDate)
-  );
   const [dropoffLocation, setDropoffLocation] = useState<number>(0);
   const [dropoffDate, setDropoffDate] = useState<IusableDate | null>(
     usableDate(currentDate)
   );
-  const [dropoffTime, setDropoffTime] = useState<IusableDate | null>(
-    usableDate(currentDate)
-  );
+
+  const [dateArr, setDateArr] = useState<Date[]>([currentDate, currentDate]);
 
   const setDate = (e: any, isPickup: boolean): void => {
-    if (isPickup) {
-      if (e.target.valueAsDate) setPickupDate(usableDate(e.target.valueAsDate));
-      else setPickupDate(null);
-    } else {
-      if (e.target.valueAsDate)
-        setDropoffDate(usableDate(e.target.valueAsDate));
+    if (e.target.value.length != 16) {
+      if (isPickup) setPickupDate(null);
       else setDropoffDate(null);
+      return;
     }
-  };
-
-  const setTime = (e: any, isPickup: boolean): void => {
+    const localDate = new Date(e.target.value);
+    const newDateArr = [...dateArr];
     if (isPickup) {
-      if (e.target.valueAsDate) setPickupTime(usableDate(e.target.valueAsDate));
-      else setPickupTime(null);
+      newDateArr[0] = localDate;
+      setDateArr([...newDateArr]);
+      setPickupDate(usableDate(localDate));
     } else {
-      if (e.target.valueAsDate)
-        setDropoffTime(usableDate(e.target.valueAsDate));
-      else setDropoffTime(null);
+      newDateArr[1] = localDate;
+      setDateArr([...newDateArr]);
+      setDropoffDate(usableDate(localDate));
     }
   };
 
@@ -138,11 +129,29 @@ const Rent: React.FC<RentProps> = ({
         minutes: number;
       };
     };
+    typeOfOrder: number;
   }
 
   const onSearch = (e: any) => {
     e.preventDefault();
-    if (pickupDate && dropoffDate && pickupTime && dropoffTime) {
+    if (pickupLocation == 0 || dropoffLocation == 0) {
+      alert("Wybierz lokalizacje");
+      return;
+    }
+
+    if (!pickupDate || !dropoffDate) {
+      alert("Wprowadź poprawne daty");
+      return;
+    }
+    if (dateArr[0] >= dateArr[1]) {
+      alert("Data odbioru wcześniejsza");
+      return;
+    }
+    if (JSON.stringify(radioResult) == JSON.stringify([false, false, false])) {
+      alert("Zaznacz wybór Truck lub Trailer");
+      return;
+    }
+    if (pickupDate && dropoffDate) {
       const order: IOrder = {
         pickup: {
           location: pickupLocation,
@@ -150,8 +159,8 @@ const Rent: React.FC<RentProps> = ({
             year: Number(pickupDate.year),
             month: Number(pickupDate.month),
             day: Number(pickupDate.day),
-            hours: Number(pickupTime.hours),
-            minutes: Number(pickupTime.minutes),
+            hours: Number(pickupDate.hours),
+            minutes: Number(pickupDate.minutes),
           },
         },
         dropoff: {
@@ -160,15 +169,28 @@ const Rent: React.FC<RentProps> = ({
             year: Number(dropoffDate.year),
             month: Number(dropoffDate.month),
             day: Number(dropoffDate.day),
-            hours: Number(dropoffTime.hours),
-            minutes: Number(dropoffTime.minutes),
+            hours: Number(dropoffDate.hours),
+            minutes: Number(dropoffDate.minutes),
           },
         },
+        typeOfOrder: radioResult[0] ? 0 : radioResult[1] ? 1 : 2,
       };
-      console.log(order);
+      setShowResults(order);
+      console.log(order, "WNIOSEK PRZYJETY");
     }
   };
 
+  const [radioResult, setRadioResult] = useState<boolean[]>([
+    false,
+    false,
+    false,
+  ]);
+
+  const [showResults, setShowResults] = useState<IOrder | null>(null);
+
+  const [showProceedWindow, setShowProceedWindow] = useState<
+    RentProps["vehicles"][0] | null
+  >(null);
   return (
     <div>
       <h1 className="text-2xl font-semibold">Rent a vehicle</h1>
@@ -176,7 +198,7 @@ const Rent: React.FC<RentProps> = ({
         <div className="formFirstContainer">
           <div className="tripleContainer">
             <div className="formElement">
-              <label>Pick-up location</label>
+              <label>Pick-up Location</label>
               <br />
               <select
                 className="selectElement"
@@ -193,33 +215,23 @@ const Rent: React.FC<RentProps> = ({
               </select>
             </div>
             <div className="formElement">
-              <label>Pick-up date</label>
+              <label>Pick-up Date&Time</label>
               <br />
               <input
                 className="selectElement"
-                type="date"
+                type="datetime-local"
                 defaultValue={`${usableDate(currentDate).year}-${
                   usableDate(currentDate).month
-                }-${usableDate(currentDate).day}`}
+                }-${usableDate(currentDate).day}T${
+                  usableDate(currentDate).hours
+                }:${usableDate(currentDate).minutes}`}
                 onChange={(e) => setDate(e, true)}
-              />
-            </div>
-            <div className="formElement">
-              <label>Pick-up time</label>
-              <br />
-              <input
-                className="selectElement"
-                type="time"
-                defaultValue={`${usableDate(currentDate).hours}:${
-                  usableDate(currentDate).minutes
-                }`}
-                onChange={(e) => setTime(e, true)}
               />
             </div>
           </div>
           <div className="tripleContainer">
             <div className="formElement">
-              <label>Drop-off location</label>
+              <label>Drop-off Location</label>
               <br />
               <select
                 className="selectElement"
@@ -236,27 +248,17 @@ const Rent: React.FC<RentProps> = ({
               </select>
             </div>
             <div className="formElement">
-              <label>Drop-off date</label>
+              <label>Drop-off Date&Time</label>
               <br />
               <input
                 className="selectElement"
-                type="date"
+                type="datetime-local"
                 defaultValue={`${usableDate(currentDate).year}-${
                   usableDate(currentDate).month
-                }-${usableDate(currentDate).day}`}
+                }-${usableDate(currentDate).day}T${
+                  usableDate(currentDate).hours
+                }:${usableDate(currentDate).minutes}`}
                 onChange={(e) => setDate(e, false)}
-              />
-            </div>
-            <div className="formElement">
-              <label>Drop-off time</label>
-              <br />
-              <input
-                className="selectElement"
-                type="time"
-                defaultValue={`${usableDate(currentDate).hours}:${
-                  usableDate(currentDate).minutes
-                }`}
-                onChange={(e) => setTime(e, false)}
               />
             </div>
           </div>
@@ -270,6 +272,11 @@ const Rent: React.FC<RentProps> = ({
                   id="radio1"
                   name="rentType"
                   className="inputRadio"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRadioResult([true, false, false]);
+                    }
+                  }}
                 />
                 <label htmlFor="radio1" className="labelRadio">
                   Truck & Trailer
@@ -281,6 +288,11 @@ const Rent: React.FC<RentProps> = ({
                   id="radio2"
                   name="rentType"
                   className="inputRadio"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRadioResult([false, true, false]);
+                    }
+                  }}
                 />
                 <label htmlFor="radio2" className="labelRadio">
                   Only Truck
@@ -292,13 +304,18 @@ const Rent: React.FC<RentProps> = ({
                   id="radio3"
                   name="rentType"
                   className="inputRadio"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRadioResult([false, false, true]);
+                    }
+                  }}
                 />
                 <label htmlFor="radio3" className="labelRadio">
                   Only Trailer
                 </label>
               </div>
               <div>
-                <button className="flex bg-red-400 pl-4 pr-4 pt-3 pb-3 ml-5 rounded text-white text-lg">
+                <button className="flex bg-red-400 pl-3 pr-3 pt-2 pb-2 ml-5 rounded text-white text-lg searchButton hover:bg-red-500">
                   <span>Search</span>
                   <span className="mt-1 ml-1">
                     <GrSearch />
@@ -310,9 +327,42 @@ const Rent: React.FC<RentProps> = ({
         </div>
       </form>
 
-      <div className="secondFormContainer">
-        <VehicleType vehicles={vehicles} fetchedData={fetchedData} />
-      </div>
+      {!showResults ? (
+        <div className="secondFormContainer"> </div>
+      ) : // Truck&Trailer
+      showResults.typeOfOrder == 0 ? (
+        <div className="secondFormContainer">
+          <VehicleType
+            vehicles={vehicles}
+            places={places}
+            fetchedData={fetchedData}
+            pickupLocation={showResults.pickup.location}
+            setShowProceedWindow={setShowProceedWindow}
+          />
+        </div>
+      ) : // Only Truck
+      showResults.typeOfOrder == 1 ? (
+        <div className="secondFormContainer">
+          <VehicleType
+            vehicles={vehicles}
+            places={places}
+            fetchedData={fetchedData}
+            pickupLocation={showResults.pickup.location}
+            setShowProceedWindow={setShowProceedWindow}
+          />
+          {showProceedWindow && <ChooseWindow vehicle={showProceedWindow} />}
+        </div>
+      ) : (
+        //Only Trailer
+        <div className="secondFormContainer">
+          <TrailerType
+            trailers={trailers}
+            places={places}
+            fetchedData={fetchedData}
+            pickupLocation={showResults.pickup.location}
+          />
+        </div>
+      )}
     </div>
   );
 };

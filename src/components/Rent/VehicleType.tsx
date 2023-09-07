@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleVehicle from "./SingleVehicle";
+import { RentProps } from "./Rent";
 
 interface VehicleTypeProps {
   vehicles: {
@@ -14,10 +15,28 @@ interface VehicleTypeProps {
     price: number;
   }[];
 
+  places: {
+    id: number;
+    city: string;
+    address: string;
+    phonenumber: number;
+    latlng: [number, number];
+  }[];
+
   fetchedData: boolean;
+
+  pickupLocation: number;
+
+  setShowProceedWindow: (value: RentProps["vehicles"][0] | null) => void;
 }
 
-const VehicleType: React.FC<VehicleTypeProps> = ({ vehicles, fetchedData }) => {
+const VehicleType: React.FC<VehicleTypeProps> = ({
+  vehicles,
+  places,
+  fetchedData,
+  pickupLocation,
+  setShowProceedWindow,
+}) => {
   const [collapse, setCollapse] = useState(false);
   const [highlight, setHighlight] = useState([
     false,
@@ -66,7 +85,15 @@ const VehicleType: React.FC<VehicleTypeProps> = ({ vehicles, fetchedData }) => {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold">Trucks</h2>
+      {places.map(
+        (place) =>
+          place.id == pickupLocation && (
+            <h2 className="text-lg font-semibold">
+              Trucks available in {place.city}:
+            </h2>
+          )
+      )}
+      <h2 className="text-lg font-semibold"> </h2>
       <div className="sortContainer">
         <SortElement
           type={0}
@@ -112,9 +139,16 @@ const VehicleType: React.FC<VehicleTypeProps> = ({ vehicles, fetchedData }) => {
         />
       </div>
       <div className="vehiclesContainer">
-        {sortedVehicles.map((truck, key) => (
-          <SingleVehicle truck={truck} collapse={collapse} />
-        ))}
+        {sortedVehicles.map(
+          (truck, key) =>
+            truck.available.includes(pickupLocation) && (
+              <SingleVehicle
+                truck={truck}
+                collapse={collapse}
+                setShowProceedWindow={setShowProceedWindow}
+              />
+            )
+        )}
       </div>
     </div>
   );

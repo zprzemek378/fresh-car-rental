@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import "./vehicles-style.css";
+import "./rent-vehicles-style.css";
+import "../Vehicles/vehicles-style.css";
 import { MdExpandMore } from "react-icons/md";
+import { RentProps } from "./Rent";
 
 interface SingleVehicleProps {
   truck: {
@@ -15,17 +17,45 @@ interface SingleVehicleProps {
   };
 
   collapse: boolean;
+
+  setShowProceedWindow: (value: RentProps["vehicles"][0] | null) => void;
 }
 
-const SingleVehicle: React.FC<SingleVehicleProps> = ({ truck, collapse }) => {
+const SingleVehicle: React.FC<SingleVehicleProps> = ({
+  truck,
+  collapse,
+  setShowProceedWindow,
+}) => {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => setShowDetails(false), [collapse]);
 
+  const [pointingOnComponent, setPointingOnComponent] =
+    useState<boolean>(false);
+
   return (
     <div
-      className={`truckComponent ${showDetails && "truckComponent-details"}`}
+      className={`truckComponent
+      ${showDetails && "truckComponent-details"}
+      ${pointingOnComponent && "truckComponent-onpoint"}
+      `}
+      onPointerLeave={() => setPointingOnComponent(false)}
+      onPointerOver={() => setPointingOnComponent(true)}
     >
+      <div className="selectMainContainer">
+        <div
+          className={`selectContainer ${
+            showDetails && "selectContainer-details"
+          }`}
+        >
+          <button
+            onClick={() => setShowProceedWindow(truck)}
+            className={`selectButton ${showDetails && "selectButton-details"}`}
+          >
+            SELECT
+          </button>
+        </div>
+      </div>
       <img
         className="truckImage"
         src={`/fresh-car-rental/data/img/${truck.id}.png`}
@@ -56,6 +86,7 @@ const SingleVehicle: React.FC<SingleVehicleProps> = ({ truck, collapse }) => {
             </div>
           </div>
         )}
+
         <div className="flex ml-auto">
           <p className=" text-red-500">
             <span className=" font-bold">${truck.price}</span>/day

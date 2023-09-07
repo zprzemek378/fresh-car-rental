@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./vehicles-style.css";
+import "./rent-vehicles-style.css";
+import "../Vehicles/vehicles-style.css";
 import { MdExpandMore } from "react-icons/md";
 
 interface SingleVehicleProps {
@@ -31,6 +32,8 @@ interface SingleVehicleProps {
     | false;
 
   collapse: boolean;
+
+  pickupLocation: number;
 }
 
 const SingleTrailer: React.FC<SingleVehicleProps> = ({
@@ -38,15 +41,37 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
   availability0,
   availability1,
   collapse,
+  pickupLocation,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => setShowDetails(false), [collapse]);
 
+  const [pointingOnComponent, setPointingOnComponent] =
+    useState<boolean>(false);
+
   return (
     <div
-      className={`truckComponent ${showDetails && "truckComponent-details"}`}
+      className={`truckComponent
+    ${showDetails && "truckComponent-details"}
+    ${pointingOnComponent && "truckComponent-onpoint"}
+    `}
+      onPointerLeave={() => setPointingOnComponent(false)}
+      onPointerOver={() => setPointingOnComponent(true)}
     >
+      <div className="selectMainContainer">
+        <div
+          className={`selectContainer ${
+            showDetails && "selectContainer-details"
+          }`}
+        >
+          <button
+            className={`selectButton ${showDetails && "selectButton-details"}`}
+          >
+            SELECT
+          </button>
+        </div>
+      </div>
       <img
         className="truckImage"
         src={`/fresh-car-rental/data/img/${trailer.id}t.png`}
@@ -62,13 +87,25 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
               <span className="font-bold mr-auto"> Length: </span>
               &nbsp;&nbsp;
               <span>
-                {trailer.length[0]}
-                {"m - "}
-                <span className="text-red-500 font-semibold">
-                  ${trailer.price[0]}
+                <span
+                  className={`${
+                    !trailer.available[0].includes(pickupLocation) &&
+                    "trailer-unavailable"
+                  }`}
+                >
+                  {trailer.length[0]}
+                  {"m - "}
+                  <span className="text-red-500 font-semibold">
+                    ${trailer.price[0]}
+                  </span>
                 </span>
                 {trailer.length.length > 1 && (
-                  <div>
+                  <div
+                    className={`${
+                      !trailer.available[1].includes(pickupLocation) &&
+                      "trailer-unavailable"
+                    }`}
+                  >
                     {trailer.length[1]}
                     {"m - "}
                     <span className="text-red-500 font-semibold">
@@ -83,8 +120,28 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
         <div className="flex ml-auto">
           <p className=" text-red-500">
             <span className=" font-bold">
-              ${trailer.price[0]}
-              {trailer.price.length > 1 && ` - $${trailer.price[1]}`}
+              <span
+                className={`${
+                  !trailer.available[0].includes(pickupLocation) &&
+                  "trailer-unavailable"
+                }`}
+              >
+                ${trailer.price[0]}
+              </span>
+
+              {trailer.price.length > 1 && (
+                <span>
+                  {" - "}
+                  <span
+                    className={`${
+                      !trailer.available[1].includes(pickupLocation) &&
+                      "trailer-unavailable"
+                    }`}
+                  >
+                    ${trailer.price[1]}
+                  </span>
+                </span>
+              )}
             </span>
             /day
           </p>

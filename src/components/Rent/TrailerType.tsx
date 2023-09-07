@@ -21,12 +21,15 @@ interface TrailerTypeProps {
   }[];
 
   fetchedData: boolean;
+
+  pickupLocation: number;
 }
 
 const TrailerType: React.FC<TrailerTypeProps> = ({
   trailers,
   places,
   fetchedData,
+  pickupLocation,
 }) => {
   const [collapse, setCollapse] = useState(false);
   const [highlight, setHighlight] = useState([false, false, false, false]);
@@ -66,7 +69,14 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
 
   return (
     <div>
-      <h2 className="text-lg font-semibold">Trailers</h2>
+      {places.map(
+        (place) =>
+          place.id == pickupLocation && (
+            <h2 className="text-lg font-semibold">
+              Trailers available in {place.city}:
+            </h2>
+          )
+      )}
       <div className="sortContainer">
         <SortElement
           type={0}
@@ -98,22 +108,29 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
         />
       </div>
       <div className="vehiclesContainer">
-        {sortedVehicles.map((trailer, key) => (
-          <SingleTrailer
-            trailer={trailer}
-            availability0={places.filter((place) =>
-              trailer.available[0].includes(place.id)
-            )}
-            availability1={
-              trailer.available.length > 1
-                ? places.filter((place) =>
-                    trailer.available[1].includes(place.id)
-                  )
-                : false
-            }
-            collapse={collapse}
-          />
-        ))}
+        {sortedVehicles.map(
+          (trailer, key) =>
+            (trailer.available[0].includes(pickupLocation) ||
+              trailer.available[trailer.available.length - 1].includes(
+                pickupLocation
+              )) && (
+              <SingleTrailer
+                trailer={trailer}
+                availability0={places.filter((place) =>
+                  trailer.available[0].includes(place.id)
+                )}
+                availability1={
+                  trailer.available.length > 1
+                    ? places.filter((place) =>
+                        trailer.available[1].includes(place.id)
+                      )
+                    : false
+                }
+                collapse={collapse}
+                pickupLocation={pickupLocation}
+              />
+            )
+        )}
       </div>
     </div>
   );
