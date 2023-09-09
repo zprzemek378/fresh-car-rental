@@ -3,6 +3,8 @@ import "./rent-vehicles-style.css";
 import "../Vehicles/vehicles-style.css";
 import { MdExpandMore } from "react-icons/md";
 
+import { RentProps } from "./Rent";
+
 interface SingleVehicleProps {
   trailer: {
     id: number;
@@ -34,6 +36,10 @@ interface SingleVehicleProps {
   collapse: boolean;
 
   pickupLocation: number;
+
+  setShowProceedWindow: (
+    value: [RentProps["trailers"][0], boolean, boolean | null] | null
+  ) => void;
 }
 
 const SingleTrailer: React.FC<SingleVehicleProps> = ({
@@ -42,6 +48,7 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
   availability1,
   collapse,
   pickupLocation,
+  setShowProceedWindow,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -67,6 +74,15 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
         >
           <button
             className={`selectButton ${showDetails && "selectButton-details"}`}
+            onClick={() =>
+              setShowProceedWindow([
+                trailer,
+                trailer.available[0].includes(pickupLocation),
+                trailer.length.length > 1
+                  ? trailer.available[1].includes(pickupLocation)
+                  : null,
+              ])
+            }
           >
             SELECT
           </button>

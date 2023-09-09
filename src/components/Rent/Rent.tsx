@@ -7,6 +7,8 @@ import { GrSearch } from "react-icons/gr";
 import VehicleType from "./VehicleType";
 import TrailerType from "./TrailerType";
 import ChooseWindow from "./ChooseWindow";
+import ChooseTrailerWindow from "./ChooseTrailerWindow";
+import OrderResults from "./OrderResults";
 
 export interface RentProps {
   vehicles: {
@@ -38,6 +40,30 @@ export interface RentProps {
   }[];
 
   fetchedData: boolean;
+}
+
+export interface IOrder {
+  pickup: {
+    location: number;
+    date: {
+      year: number;
+      month: number;
+      day: number;
+      hours: number;
+      minutes: number;
+    };
+  };
+  dropoff: {
+    location: number;
+    date: {
+      year: number;
+      month: number;
+      day: number;
+      hours: number;
+      minutes: number;
+    };
+  };
+  typeOfOrder: number;
 }
 
 const Rent: React.FC<RentProps> = ({
@@ -108,30 +134,6 @@ const Rent: React.FC<RentProps> = ({
     }
   };
 
-  interface IOrder {
-    pickup: {
-      location: number;
-      date: {
-        year: number;
-        month: number;
-        day: number;
-        hours: number;
-        minutes: number;
-      };
-    };
-    dropoff: {
-      location: number;
-      date: {
-        year: number;
-        month: number;
-        day: number;
-        hours: number;
-        minutes: number;
-      };
-    };
-    typeOfOrder: number;
-  }
-
   const onSearch = (e: any) => {
     e.preventDefault();
     if (pickupLocation == 0 || dropoffLocation == 0) {
@@ -176,7 +178,7 @@ const Rent: React.FC<RentProps> = ({
         typeOfOrder: radioResult[0] ? 0 : radioResult[1] ? 1 : 2,
       };
       setShowResults(order);
-      console.log(order, "WNIOSEK PRZYJETY");
+      setOrderStage(1);
     }
   };
 
@@ -189,8 +191,28 @@ const Rent: React.FC<RentProps> = ({
   const [showResults, setShowResults] = useState<IOrder | null>(null);
 
   const [showProceedWindow, setShowProceedWindow] = useState<
-    RentProps["vehicles"][0] | null
+    | RentProps["vehicles"][0]
+    | [RentProps["trailers"][0], boolean, boolean | null]
+    | null
   >(null);
+
+  const [orderStage, setOrderStage] = useState<number>(0);
+
+  const [truckOrder, setTruckOrder] = useState<number>(0);
+  const [trailerOrder, setTrailerOrder] = useState<number[]>([0, 0]);
+  const ifProceed = (ifDo: boolean, whichVehicle: number[]) => {
+    setShowProceedWindow(null);
+    if (ifDo) {
+      setOrderStage(orderStage + 1);
+      if (whichVehicle[1] == -1) {
+        //Truck case
+        setTruckOrder(whichVehicle[0]);
+      } else {
+        //Trailer case
+        setTrailerOrder([...whichVehicle]);
+      }
+    }
+  };
   return (
     <div>
       <h1 className="text-2xl font-semibold">Rent a vehicle</h1>
@@ -332,13 +354,42 @@ const Rent: React.FC<RentProps> = ({
       ) : // Truck&Trailer
       showResults.typeOfOrder == 0 ? (
         <div className="secondFormContainer">
-          <VehicleType
-            vehicles={vehicles}
-            places={places}
-            fetchedData={fetchedData}
-            pickupLocation={showResults.pickup.location}
-            setShowProceedWindow={setShowProceedWindow}
-          />
+          {orderStage == 1 ? (
+            <VehicleType
+              vehicles={vehicles}
+              places={places}
+              fetchedData={fetchedData}
+              pickupLocation={showResults.pickup.location}
+              setShowProceedWindow={setShowProceedWindow}
+            />
+          ) : orderStage == 2 ? (
+            <TrailerType
+              trailers={trailers}
+              places={places}
+              fetchedData={fetchedData}
+              pickupLocation={showResults.pickup.location}
+              setShowProceedWindow={setShowProceedWindow}
+            />
+          ) : (
+            <OrderResults
+              order={showResults}
+              truckOrder={truckOrder}
+              trailerOrder={trailerOrder}
+              vehicles={vehicles}
+              trailers={trailers}
+            />
+          )}
+
+          {showProceedWindow && "brand" in showProceedWindow ? (
+            <ChooseWindow vehicle={showProceedWindow} ifProceed={ifProceed} />
+          ) : (
+            showProceedWindow && (
+              <ChooseTrailerWindow
+                vehicle={showProceedWindow}
+                ifProceed={ifProceed}
+              />
+            )
+          )}
         </div>
       ) : // Only Truck
       showResults.typeOfOrder == 1 ? (
@@ -350,7 +401,6 @@ const Rent: React.FC<RentProps> = ({
             pickupLocation={showResults.pickup.location}
             setShowProceedWindow={setShowProceedWindow}
           />
-          {showProceedWindow && <ChooseWindow vehicle={showProceedWindow} />}
         </div>
       ) : (
         //Only Trailer
@@ -360,6 +410,7 @@ const Rent: React.FC<RentProps> = ({
             places={places}
             fetchedData={fetchedData}
             pickupLocation={showResults.pickup.location}
+            setShowProceedWindow={setShowProceedWindow}
           />
         </div>
       )}

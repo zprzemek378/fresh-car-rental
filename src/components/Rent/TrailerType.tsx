@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleTrailer from "./SingleTrailer";
+import { RentProps } from "./Rent";
 
 interface TrailerTypeProps {
   trailers: {
@@ -23,6 +24,10 @@ interface TrailerTypeProps {
   fetchedData: boolean;
 
   pickupLocation: number;
+
+  setShowProceedWindow: (
+    value: [RentProps["trailers"][0], boolean, boolean | null] | null
+  ) => void;
 }
 
 const TrailerType: React.FC<TrailerTypeProps> = ({
@@ -30,6 +35,7 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
   places,
   fetchedData,
   pickupLocation,
+  setShowProceedWindow,
 }) => {
   const [collapse, setCollapse] = useState(false);
   const [highlight, setHighlight] = useState([false, false, false, false]);
@@ -128,6 +134,7 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
                 }
                 collapse={collapse}
                 pickupLocation={pickupLocation}
+                setShowProceedWindow={setShowProceedWindow}
               />
             )
         )}
