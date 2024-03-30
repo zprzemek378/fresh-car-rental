@@ -1,0 +1,89 @@
+[
+  {
+    "id": 1,
+    "name": "Intermodal",
+    "cargo": "Containers",
+    "length": [6.1, 12.2],
+    "available": [
+      [1, 3, 5, 6],
+      [1, 2, 3, 4, 6, 8]
+    ],
+    "price": [40, 55],
+    "img": "/fresh-car-rental/data/img/1t.png"
+  },
+  {
+    "id": 2,
+    "name": "Box",
+    "cargo": "General cargo",
+    "length": [16.15],
+    "available": [[2, 3, 5, 7]],
+    "price": [60],
+    "img": "/fresh-car-rental/data/img/2t.png"
+  },
+  {
+    "id": 3,
+    "name": "Refigerator",
+    "cargo": "Food",
+    "length": [14.63, 16.15],
+    "available": [[1, 3, 8], []],
+    "price": [60, 70],
+    "img": "/fresh-car-rental/data/img/3t.png"
+  },
+  {
+    "id": 4,
+    "name": "Tanker",
+    "cargo": "Liquid chemicals",
+    "length": [6.1, 16.15],
+    "available": [[], [4, 5]],
+    "price": [68, 92],
+    "img": "/fresh-car-rental/data/img/4t.png"
+  },
+  {
+    "id": 5,
+    "name": "Flatbed",
+    "cargo": "Construction materials",
+    "length": [14.63, 16.15],
+    "available": [
+      [1, 3, 5, 6],
+      [1, 2, 3, 4, 6, 8]
+    ],
+    "price": [40, 50],
+    "img": "/fresh-car-rental/data/img/5t.png"
+  },
+  {
+    "id": 6,
+    "name": "Lowboy",
+    "cargo": "Large equipment",
+    "length": [8.83],
+    "available": [[4, 6, 7, 8]],
+    "price": [55],
+    "img": "/fresh-car-rental/data/img/6t.png"
+  },
+  {
+    "id": 7,
+    "name": "Step deck",
+    "cargo": "Tall cargo",
+    "length": [14.63, 16.15],
+    "available": [[], [4, 5, 6, 7]],
+    "price": [55, 65],
+    "img": "/fresh-car-rental/data/img/7t.png"
+  },
+  {
+    "id": 8,
+    "name": "Car carrier",
+    "cargo": "Vehicles",
+    "length": [16.15],
+    "available": [[2, 4]],
+    "price": [70],
+    "img": "/fresh-car-rental/data/img/8t.png"
+  },
+  {
+    "id": 9,
+    "name": "Dump",
+    "cargo": "Gravel, sand",
+    "length": [13.71],
+    "available": [[5, 7, 8]],
+    "price": [80],
+    "img": "/fresh-car-rental/data/img/9t.png"
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "email": "peterson@gmail.com",
+    "password": "$2b$10$mXKHm/v87N/sSSdvK67RNuib7hd50mCRH7gSifpYb2DqkUidXN4.W",
+    "firstname": "Jessica",
+    "lastname": "Peterson",
+    "roles": { "User": 2001 },
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBldGVyc29uQGdtYWlsLmNvbSIsImlhdCI6MTcwNzE3NDgzMywiZXhwIjoxNzA3MTc4NDMzfQ.yBNlw0coyYjPwV2AA5dtOhsDpWJ4TzOr30qZ_t2bVPs"
+  },
+  {
+    "email": "rbubbles@gmail.com",
+    "password": "$2b$10$hj3k6Ihhd.sT3FNaIDp5W.XqFJaF3mrzEiRwzzJsyj3eebwFtRveC",
+    "firstname": "Ray",
+    "lastname": "Bubbles",
+    "roles": { "User": 2001 },
+    "refreshToken": ""
+  },
+  {
+    "email": "wbrown@gmail.com",
+    "password": "$2b$10$NgZPZbmW2rGVjeytp6n93Ou3Nz6thbSx/gzZFDDTpOpNpApituGgC",
+    "firstname": "Walter",
+    "lastname": "Brown",
+    "roles": { "User": 2001 },
+    "refreshToken": ""
+  },
+  {
+    "email": "mnowak@gmail.com",
+    "password": "$2b$10$h.Nz6dBYtZ9GixV4Tl4UXurKFXEtWL6J.JYgErwmD5BmUmHSm6yvC",
+    "firstname": "Marek",
+    "lastname": "Nowak",
+    "roles": { "Client": 2001 },
+    "refreshToken": ""
+  },
+  {
+    "email": "dwisniewski@gmail.com",
+    "password": "$2b$10$npdt7/iAVXb/Qr7/eGpv9uGiqwzLhqz1ca47BpJkiGxRfcnw3nEfm",
+    "firstname": "Damian",
+    "lastname": "Wiśniewski",
+    "roles": { "Client": 2001 },
+    "refreshToken": ""
+  },
+  {
+    "email": "mkowalski@gmail.com",
+    "password": "$2b$10$Z3aj2glTzZJnWQG3VsObGeeebigrfQQYWORlW9KLsQDd6/Cj7bMa2",
+    "firstname": "Maciej",
+    "lastname": "Kowalskim",
+    "roles": { "Client": 2001 },
+    "refreshToken": ""
+  },
+  {
+    "email": "glahey@gmail.com",
+    "password": "$2b$10$ia1VL/TCMWbHXvKCv/ZXrel6cLJe4vWtPhtCcGtEWN5iWGod65igu",
+    "firstname": "George",
+    "lastname": "Lahey",
+    "roles": { "User": 2001, "Admin": 5150 },
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdsYWhleUBnbWFpbC5jb20iLCJpYXQiOjE3MDczMjIzMTMsImV4cCI6MTcwNzMyNTkxM30.DRoCcOeKfKQc4rge6TgW8f7XYJpa6vtbkyYGHA5J7WQ"
+  },
+  {
+    "email": "corytpb@gmail.com",
+    "password": "$2b$10$m2a2ONbM7vfSgOLKQXj6turYCE/0E7wtfRpQ2N2Puc1xURsUwLKHq",
+    "firstname": "Cory",
+    "lastname": "Green",
+    "roles": { "User": 2001 },
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvcnl0cGJAZ21haWwuY29tIiwiaWF0IjoxNzA3Mzk3NDIwLCJleHAiOjE3MDc0MDEwMjB9.pHAK0-SI8uWRGjdBdnfrNryFDffYFBLPIOVcVqCO1to"
+  }
+]

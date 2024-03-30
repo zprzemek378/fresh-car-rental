@@ -5,43 +5,11 @@ import VehicleType from "./VehicleType";
 import TrailerType from "./TrailerType";
 
 interface VehiclesProps {
-  vehicles: {
-    id: number;
-    brand: string;
-    model: string;
-    horsepower: number;
-    color: string;
-    available: number[];
-    tank: number;
-    price: number;
-  }[];
-
-  places: {
-    id: number;
-    city: string;
-    address: string;
-    phonenumber: number;
-    latlng: [number, number];
-  }[];
-
-  trailers: {
-    id: number;
-    name: string;
-    cargo: string;
-    length: number[];
-    available: number[][];
-    price: number[];
-  }[];
-
-  fetchedData: boolean;
+  setBackgroundImage: (imagePath: string) => void;
 }
 
-const Vehicles: React.FC<VehiclesProps> = ({
-  vehicles,
-  places,
-  fetchedData,
-  trailers,
-}) => {
+const Vehicles: React.FC<VehiclesProps> = ({ setBackgroundImage }) => {
+  setBackgroundImage("vehicles");
   const [typeOfProduct, setTypeOfProduct] = useState(0);
   const changeTypeOfProduct = (type: number) => {
     const newHighlightType = [false, false];
@@ -75,19 +43,11 @@ const Vehicles: React.FC<VehiclesProps> = ({
 
       {typeOfProduct == 0 ? (
         <div>
-          <VehicleType
-            fetchedData={fetchedData}
-            vehicles={vehicles}
-            places={places}
-          />
+          <VehicleType />
         </div>
       ) : (
         <div>
-          <TrailerType
-            fetchedData={fetchedData}
-            places={places}
-            trailers={trailers}
-          />
+          <TrailerType />
         </div>
       )}
     </div>

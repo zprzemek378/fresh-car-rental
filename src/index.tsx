@@ -4,6 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { HashRouter } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
+import { LoggedProvider } from "./context/LoggedProvider";
+import { SnackbarProvider } from "./context/SnackbarProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,7 +14,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <HashRouter>
-      <App />
+      <AuthProvider>
+        <SnackbarProvider>
+          <LoggedProvider>
+            <App />
+          </LoggedProvider>
+        </SnackbarProvider>
+      </AuthProvider>
     </HashRouter>
   </React.StrictMode>
 );

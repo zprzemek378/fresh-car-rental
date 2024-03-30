@@ -4,7 +4,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.1.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@fontsource/poppins": "^5.0.8",
+    "@mui/material": "^5.15.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,7 +16,18 @@
     "@types/node": "^16.18.42",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "emailjs": "^4.0.3",
+    "express": "^4.18.3",
+    "express.js": "^1.0.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
+    "mui": "^0.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
@@ -28,7 +43,8 @@
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "devStart": "nodemon server/server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +68,7 @@
     "@types/leaflet": "^1.9.3",
     "@types/react-leaflet-markercluster": "^3.0.1",
     "gh-pages": "^6.0.0",
+    "nodemon": "^3.0.3",
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "tailwindcss": "^3.3.3"
   }

@@ -1,9 +1,9 @@
 import { IoMdReturnLeft, IoMdReturnRight } from "react-icons/io";
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 import { useState } from "react";
 
 interface ChooseTrailerWindowProps {
-  vehicle: [RentProps["trailers"][0], boolean, boolean | null];
+  vehicle: [OrderParameters["trailers"][0], boolean, boolean | null];
   ifProceed: (value: boolean, numbers: number[]) => void;
 }
 

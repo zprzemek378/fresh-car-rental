@@ -1,0 +1,106 @@
+.contactMe {
+  background-color: rgb(220, 234, 255);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.contactMeText {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+  text-align: justify;
+}
+
+.contactForm {
+  background-color: rgb(255, 224, 224);
+  border-radius: 3px;
+  border: 3px solid red;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  justify-items: center;
+
+  padding: 20px;
+}
+
+.formElementContact {
+  background-color: rgb(210, 210, 210);
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.inputText {
+  width: 300px;
+
+  font-size: 16px;
+  padding: 3px;
+  border-radius: 5px;
+
+  @media (max-width: 560px) {
+    width: 230px;
+  }
+}
+
+.contactPlace {
+  width: 100%;
+  max-width: 650px;
+
+  @media (max-width: 1046px) {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+  }
+}
+
+.externalLink {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.externalLinkText {
+  font-weight: 700;
+  color: rgb(30 64 175);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.externalLink:hover {
+  animation: rotateSideContact 0.8s linear both;
+}
+
+@keyframes rotateSideContact {
+  0% {
+    transform: rotate3d(0, 1, 0, 0deg) scale(1);
+  }
+  50% {
+    transform: rotate3d(0, 1, 0, -180deg) scale(1.6);
+  }
+  100% {
+    transform: rotate3d(0, 1, 0, -360deg) scale(1);
+  }
+}
+
+.responsiveContact {
+  display: flex;
+  @media (max-width: 1046px) {
+    flex-direction: column;
+  }
+}
+
+.feelFree {
+  @media (max-width: 1046px) {
+    margin-top: 30px;
+  }
+}

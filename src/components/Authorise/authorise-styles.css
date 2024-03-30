@@ -1,0 +1,102 @@
+.loginForm {
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(255, 224, 224);
+  border-radius: 5px;
+  display: flex;
+  width: 500px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  border: 6px solid red;
+}
+
+.loginElement {
+  min-width: 240px;
+  padding: 5px;
+  flex: 1;
+  background-color: rgb(255, 224, 224);
+}
+
+.nameElement {
+  min-width: 150px;
+  padding: 5px;
+  background-color: rgb(255, 224, 224);
+}
+
+.inputInLoginForm {
+  border-radius: 3px;
+  min-width: 350px;
+  padding: 5px;
+}
+
+.nameInRegisterForm {
+  border-radius: 3px;
+  width: 136px;
+  padding: 5px;
+}
+
+.orderComponent {
+  min-height: 30px;
+  margin: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 2px;
+  padding-right: 7px;
+  min-width: 300px;
+
+  background-color: rgb(235, 235, 235);
+  border-radius: 5px;
+  box-shadow: 1px 1px 4px -2px black;
+
+  flex: 1;
+  display: flex;
+
+  transition: height 0.5s, background-color 0.3s;
+}
+
+.orderComponent-onpoint {
+  background-color: rgb(235, 220, 220);
+}
+
+.photosInOrders {
+  margin-right: auto;
+
+  @media (max-width: 850px) {
+    flex-direction: column;
+  }
+}
+
+.chooseContainerAccount {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+
+  width: 600px;
+  flex-direction: row;
+
+  @media (max-width: 800px) {
+    width: 300px;
+  }
+}
+
+.groupChoosers {
+  display: flex;
+  width: 300px;
+  flex-direction: row;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    width: 150px;
+  }
+}
+
+.groupUsers {
+  display: flex;
+  flex: 1;
+
+  flex-direction: row;
+  @media (max-width: 1080px) {
+    flex-direction: column;
+  }
+}

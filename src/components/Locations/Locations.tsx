@@ -7,32 +7,47 @@ import MarkerComp from "./MarkerComp";
 import ChangeLocation from "./ChangeLocation";
 
 interface LocationsProps {
-  places: {
+  setBackgroundImage: (imagePath: string) => void;
+}
+
+interface IPlaces
+  extends Array<{
     id: number;
     city: string;
     address: string;
     phonenumber: number;
     latlng: [number, number];
-  }[];
+  }> {}
 
-  fetchedData: boolean;
-}
-
-const Locations: React.FC<LocationsProps> = ({ places, fetchedData }) => {
+const Locations: React.FC<LocationsProps> = ({ setBackgroundImage }) => {
+  setBackgroundImage("locations");
   interface ICenter extends Array<number> {
     0: number;
     1: number;
   }
-
-  useEffect(() => {
-    fetchedData && setLatlngCenter([places[0].latlng[0], places[0].latlng[1]]);
-  }, [fetchedData]);
 
   // Change place dynamically
 
   const [latlngCenter, setLatlngCenter] = useState<ICenter>([
     52.21046118337764, 21.0274783543051,
   ]);
+
+  const [places, setPlaces] = useState<IPlaces>([]);
+
+  const fetchPlaces = async () => {
+    const response = await fetch("http://localhost:3001/places");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    setLatlngCenter([data[0].latlng[0], data[0].latlng[1]]);
+    setPlaces(data);
+  };
+
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
 
   return (
     <div>

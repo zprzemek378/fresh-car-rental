@@ -1,8 +1,8 @@
 import { IoMdReturnLeft, IoMdReturnRight } from "react-icons/io";
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 
 interface ChooseWindowProps {
-  vehicle: RentProps["vehicles"][0];
+  vehicle: OrderParameters["vehicles"][0];
   ifProceed: (value: boolean, numbers: number[]) => void;
 }
 

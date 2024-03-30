@@ -13,6 +13,7 @@ interface SingleVehicleProps {
     available: number[];
     tank: number;
     price: number;
+    img: string;
   };
 
   availability: {
@@ -47,10 +48,7 @@ const SingleVehicle: React.FC<SingleVehicleProps> = ({
       onPointerLeave={() => setPointingOnComponent(false)}
       onPointerOver={() => setPointingOnComponent(true)}
     >
-      <img
-        className="truckImage"
-        src={`/fresh-car-rental/data/img/${truck.id}.png`}
-      />
+      <img className="truckImage" alt="truckImage" src={truck.img} />
       <div className="primaryInfo">
         <div>
           <h2 className=" font-bold text-lg">{truck.brand}</h2>

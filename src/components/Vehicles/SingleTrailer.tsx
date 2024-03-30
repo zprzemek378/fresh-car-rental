@@ -11,6 +11,7 @@ interface SingleVehicleProps {
     length: number[];
     available: number[][];
     price: number[];
+    img: string;
   };
 
   availability0: {
@@ -48,10 +49,7 @@ const SingleTrailer: React.FC<SingleVehicleProps> = ({
     <div
       className={`truckComponent ${showDetails && "truckComponent-details"}`}
     >
-      <img
-        className="truckImage"
-        src={`/fresh-car-rental/data/img/${trailer.id}t.png`}
-      />
+      <img className="truckImage" alt="truckImage" src={trailer.img} />
       <div className="primaryInfo">
         <div>
           <h2 className=" font-bold text-lg">{trailer.name}</h2>

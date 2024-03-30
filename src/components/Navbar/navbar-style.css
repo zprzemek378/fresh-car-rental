@@ -1,6 +1,5 @@
 .navbar-main {
   display: block;
-
   @media (min-width: 680px) {
     display: flex;
   }
@@ -15,4 +14,35 @@
     flex-direction: row;
     align-items: center;
   }
+}
+
+.loginOrAccountBox {
+  position: absolute;
+  visibility: hidden;
+
+  @media (min-width: 680px) {
+    visibility: visible;
+    position: inherit;
+    margin-left: auto;
+    justify-content: right;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.loginOrAccountBox:hover {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.loginIcon {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.loginOrAccount {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 20px;
 }

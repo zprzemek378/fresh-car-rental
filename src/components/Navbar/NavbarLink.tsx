@@ -8,7 +8,7 @@ interface NavbarLinkProps {
 const NavbarLink: React.FC<NavbarLinkProps> = ({ name, minWidth }) => {
   return (
     <Link
-      to={`/${name.toLowerCase()}`}
+      to={`/${name.toLowerCase().replace(" ", "")}`}
       className="navbar-item rounded-lg hover:bg-gray-200"
     >
       <div

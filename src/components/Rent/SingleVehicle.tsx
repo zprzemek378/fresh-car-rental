@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./rent-vehicles-style.css";
 import "../Vehicles/vehicles-style.css";
 import { MdExpandMore } from "react-icons/md";
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 
 interface SingleVehicleProps {
   truck: {
@@ -14,11 +14,12 @@ interface SingleVehicleProps {
     available: number[];
     tank: number;
     price: number;
+    img: string;
   };
 
   collapse: boolean;
 
-  setShowProceedWindow: (value: RentProps["vehicles"][0] | null) => void;
+  setShowProceedWindow: (value: OrderParameters["vehicles"][0] | null) => void;
 }
 
 const SingleVehicle: React.FC<SingleVehicleProps> = ({

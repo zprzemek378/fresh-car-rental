@@ -2,32 +2,27 @@ import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleTrailer from "./SingleTrailer";
 
-interface TrailerTypeProps {
-  trailers: {
+interface ITrailers
+  extends Array<{
     id: number;
     name: string;
     cargo: string;
     length: number[];
     available: number[][];
     price: number[];
-  }[];
+    img: string;
+  }> {}
 
-  places: {
+interface IPlaces
+  extends Array<{
     id: number;
     city: string;
     address: string;
     phonenumber: number;
     latlng: [number, number];
-  }[];
+  }> {}
 
-  fetchedData: boolean;
-}
-
-const TrailerType: React.FC<TrailerTypeProps> = ({
-  trailers,
-  places,
-  fetchedData,
-}) => {
+const TrailerType = () => {
   const [collapse, setCollapse] = useState(false);
   const [highlight, setHighlight] = useState([false, false, false, false]);
 
@@ -44,7 +39,6 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
         case 1:
           return b.name.localeCompare(a.name);
         case 4:
-          console.log(a, b);
           return a.price[0] - b.price[0];
         case 5:
           return b.price[b.price.length - 1] - a.price[a.price.length - 1];
@@ -56,13 +50,35 @@ const TrailerType: React.FC<TrailerTypeProps> = ({
     setSortedVehicles([...newSortedVehicles]);
   };
 
-  const [sortedVehicles, setSortedVehicles] = useState<
-    TrailerTypeProps["trailers"]
-  >([]);
+  const [sortedVehicles, setSortedVehicles] = useState<ITrailers>([]);
+  const [places, setPlaces] = useState<IPlaces>([]);
+
+  const fetchTrailers = async () => {
+    const response = await fetch("http://localhost:3001/trailers");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setSortedVehicles(data);
+  };
+
+  const fetchPlaces = async () => {
+    const response = await fetch("http://localhost:3001/places");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setPlaces(data);
+  };
 
   useEffect(() => {
-    setSortedVehicles(trailers);
-  }, [fetchedData]);
+    fetchTrailers();
+    fetchPlaces();
+  }, []);
 
   return (
     <div>

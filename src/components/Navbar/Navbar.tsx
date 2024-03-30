@@ -4,6 +4,8 @@ import { ImTruck } from "react-icons/im";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import NavbarLink from "./NavbarLink";
+import { MdAccountCircle } from "react-icons/md";
+import useLogged from "../../hooks/useLogged";
 
 const Navbar = () => {
   const [barState, setBarState] = useState(false);
@@ -21,6 +23,9 @@ const Navbar = () => {
     () => setMinWidth(window.matchMedia("(min-width: 680px)").matches),
     []
   );
+
+  //@ts-ignore
+  const { logged } = useLogged();
 
   return (
     <div className="bg-gray-100">
@@ -54,8 +59,27 @@ const Navbar = () => {
             <NavbarLink name="Vehicles" minWidth={minWidth} />
             <NavbarLink name="Locations" minWidth={minWidth} />
             <NavbarLink name="Contact" minWidth={minWidth} />
+            {!minWidth && (
+              <Link
+                to={"/authorise"}
+                className="flex p-2 flex-1 border-t-2 border-gray-200 hover:bg-gray-200 hover:rounded-lg"
+              >
+                <div className="loginIcon">
+                  <MdAccountCircle size={25} className="m-1" />
+                </div>
+                <div className="loginOrAccount">
+                  {logged ? "ACCOUNT" : "LOGIN"}
+                </div>
+              </Link>
+            )}
           </div>
         )}
+        <Link to={"/authorise"} className="flex loginOrAccountBox">
+          <div className="loginIcon">
+            <MdAccountCircle size={25} className="m-1" />
+          </div>
+          <div className="loginOrAccount">{logged ? "ACCOUNT" : "LOGIN"}</div>
+        </Link>
       </div>
     </div>
   );

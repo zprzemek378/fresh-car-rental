@@ -2,15 +2,21 @@ import "./rent-style.css";
 import "./rent-vehicles-style.css";
 import "../Vehicles/vehicles-style.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrSearch } from "react-icons/gr";
 import VehicleType from "./VehicleType";
 import TrailerType from "./TrailerType";
 import ChooseWindow from "./ChooseWindow";
 import ChooseTrailerWindow from "./ChooseTrailerWindow";
 import OrderResults from "./OrderResults";
+import useSnackbar from "../../hooks/useSnackbar";
+import useLogged from "../../hooks/useLogged";
 
-export interface RentProps {
+interface RentProps {
+  setBackgroundImage: (imagePath: string) => void;
+}
+
+export interface OrderParameters {
   vehicles: {
     id: number;
     brand: string;
@@ -20,6 +26,7 @@ export interface RentProps {
     available: number[];
     tank: number;
     price: number;
+    img: string;
   }[];
 
   places: {
@@ -37,12 +44,18 @@ export interface RentProps {
     length: number[];
     available: number[][];
     price: number[];
+    img: string;
   }[];
-
-  fetchedData: boolean;
 }
 
 export interface IOrder {
+  orderDate: {
+    year: number;
+    month: number;
+    day: number;
+    hours: number;
+    minutes: number;
+  };
   pickup: {
     location: number;
     date: {
@@ -66,12 +79,8 @@ export interface IOrder {
   typeOfOrder: number;
 }
 
-const Rent: React.FC<RentProps> = ({
-  vehicles,
-  places,
-  fetchedData,
-  trailers,
-}) => {
+const Rent: React.FC<RentProps> = ({ setBackgroundImage }) => {
+  setBackgroundImage("rent");
   // Current Date&Time
   const currentDate = new Date();
   interface IusableDate {
@@ -134,27 +143,74 @@ const Rent: React.FC<RentProps> = ({
     }
   };
 
+  const [pickupLocationError, setPickupLocationError] = useState(false);
+  const [pickupDateError, setPickupDateError] = useState(false);
+  const [dropoffLocationError, setDropoffLocationError] = useState(false);
+  const [dropoffDateError, setDropoffDateError] = useState(false);
+  const [truckTrailerChooseError, setTruckTrailerChooseError] = useState(false);
+
+  //@ts-ignore
+  const { logged } = useLogged();
   const onSearch = (e: any) => {
     e.preventDefault();
-    if (pickupLocation == 0 || dropoffLocation == 0) {
-      alert("Wybierz lokalizacje");
+
+    needToLoginAlert();
+    if (!logged) {
       return;
     }
 
-    if (!pickupDate || !dropoffDate) {
-      alert("Wprowadź poprawne daty");
-      return;
+    let ifReturn = false;
+
+    if (pickupLocation == 0) {
+      setPickupLocationError(true);
+      setTimeout(() => setPickupLocationError(false), 900);
+      ifReturn = true;
     }
+
+    if (dropoffLocation == 0) {
+      setDropoffLocationError(true);
+      setTimeout(() => setDropoffLocationError(false), 900);
+      ifReturn = true;
+    }
+
+    if (!pickupDate) {
+      setPickupDateError(true);
+      setTimeout(() => setPickupDateError(false), 900);
+      ifReturn = true;
+    }
+
+    if (!dropoffDate) {
+      setDropoffDateError(true);
+      setTimeout(() => setDropoffDateError(false), 900);
+      ifReturn = true;
+    }
+
     if (dateArr[0] >= dateArr[1]) {
-      alert("Data odbioru wcześniejsza");
-      return;
+      setPickupDateError(true);
+      setTimeout(() => setPickupDateError(false), 900);
+
+      setDropoffDateError(true);
+      setTimeout(() => setDropoffDateError(false), 900);
+      ifReturn = true;
     }
     if (JSON.stringify(radioResult) == JSON.stringify([false, false, false])) {
-      alert("Zaznacz wybór Truck lub Trailer");
-      return;
+      setTruckTrailerChooseError(true);
+      setTimeout(() => setTruckTrailerChooseError(false), 900);
+      ifReturn = true;
     }
+
+    if (ifReturn) return;
+
+    const orderDate = usableDate(currentDate);
     if (pickupDate && dropoffDate) {
       const order: IOrder = {
+        orderDate: {
+          year: Number(orderDate.year),
+          month: Number(orderDate.month),
+          day: Number(orderDate.day),
+          hours: Number(orderDate.hours),
+          minutes: Number(orderDate.minutes),
+        },
         pickup: {
           location: pickupLocation,
           date: {
@@ -191,8 +247,8 @@ const Rent: React.FC<RentProps> = ({
   const [showResults, setShowResults] = useState<IOrder | null>(null);
 
   const [showProceedWindow, setShowProceedWindow] = useState<
-    | RentProps["vehicles"][0]
-    | [RentProps["trailers"][0], boolean, boolean | null]
+    | OrderParameters["vehicles"][0]
+    | [OrderParameters["trailers"][0], boolean, boolean | null]
     | null
   >(null);
 
@@ -205,6 +261,7 @@ const Rent: React.FC<RentProps> = ({
     if (ifDo) {
       setOrderStage(orderStage + 1);
       if (whichVehicle[1] == -1) {
+        //-1 oznacza truck, 0 i 1 to rózne rozmiary naczepy)
         //Truck case
         setTruckOrder(whichVehicle[0]);
       } else {
@@ -213,20 +270,80 @@ const Rent: React.FC<RentProps> = ({
       }
     }
   };
+
+  const [vehicles, setVehicles] = useState<OrderParameters["vehicles"]>([]);
+  const [places, setPlaces] = useState<OrderParameters["places"]>([]);
+  const [trailers, setTrailers] = useState<OrderParameters["trailers"]>([]);
+
+  const fetchVehicles = async () => {
+    const response = await fetch("http://localhost:3001/trucks");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setVehicles(data);
+  };
+
+  const fetchTrailers = async () => {
+    const response = await fetch("http://localhost:3001/trailers");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setTrailers(data);
+  };
+
+  const fetchPlaces = async () => {
+    const response = await fetch("http://localhost:3001/places");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setPlaces(data);
+  };
+
+  const [fetchedData, setFetchedData] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchVehicles();
+    fetchTrailers();
+    fetchPlaces();
+    setFetchedData(true);
+  }, []);
+
+  //@ts-ignore
+  const { setSnackbarParams } = useSnackbar();
+  const needToLoginAlert = () => {
+    if (!logged) {
+      setSnackbarParams({ severity: "error", text: "You need to log in!" });
+    }
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-semibold">Rent a vehicle</h1>
       <form onSubmit={(e) => onSearch(e)}>
         <div className="formFirstContainer">
           <div className="tripleContainer">
-            <div className="formElement">
+            <div
+              className={`formElement ${
+                pickupLocationError && "formElement-error"
+              }`}
+            >
               <label>Pick-up Location</label>
               <br />
               <select
                 className="selectElement"
-                onChange={(e) =>
-                  setPickupLocation(Number(e.currentTarget.value))
-                }
+                onChange={(e) => {
+                  needToLoginAlert();
+                  setPickupLocation(Number(e.currentTarget.value));
+                }}
               >
                 <option selected disabled>
                   From where?
@@ -236,7 +353,11 @@ const Rent: React.FC<RentProps> = ({
                 ))}
               </select>
             </div>
-            <div className="formElement">
+            <div
+              className={`formElement ${
+                pickupDateError && "formElement-error"
+              }`}
+            >
               <label>Pick-up Date&Time</label>
               <br />
               <input
@@ -247,19 +368,27 @@ const Rent: React.FC<RentProps> = ({
                 }-${usableDate(currentDate).day}T${
                   usableDate(currentDate).hours
                 }:${usableDate(currentDate).minutes}`}
-                onChange={(e) => setDate(e, true)}
+                onChange={(e) => {
+                  needToLoginAlert();
+                  setDate(e, true);
+                }}
               />
             </div>
           </div>
           <div className="tripleContainer">
-            <div className="formElement">
+            <div
+              className={`formElement ${
+                dropoffLocationError && "formElement-error"
+              }`}
+            >
               <label>Drop-off Location</label>
               <br />
               <select
                 className="selectElement"
-                onChange={(e) =>
-                  setDropoffLocation(Number(e.currentTarget.value))
-                }
+                onChange={(e) => {
+                  needToLoginAlert();
+                  setDropoffLocation(Number(e.currentTarget.value));
+                }}
               >
                 <option selected disabled>
                   To where?
@@ -269,7 +398,11 @@ const Rent: React.FC<RentProps> = ({
                 ))}
               </select>
             </div>
-            <div className="formElement">
+            <div
+              className={`formElement ${
+                dropoffDateError && "formElement-error"
+              }`}
+            >
               <label>Drop-off Date&Time</label>
               <br />
               <input
@@ -280,7 +413,10 @@ const Rent: React.FC<RentProps> = ({
                 }-${usableDate(currentDate).day}T${
                   usableDate(currentDate).hours
                 }:${usableDate(currentDate).minutes}`}
-                onChange={(e) => setDate(e, false)}
+                onChange={(e) => {
+                  needToLoginAlert();
+                  setDate(e, false);
+                }}
               />
             </div>
           </div>
@@ -296,11 +432,17 @@ const Rent: React.FC<RentProps> = ({
                   className="inputRadio"
                   onChange={(e) => {
                     if (e.target.checked) {
+                      needToLoginAlert();
                       setRadioResult([true, false, false]);
                     }
                   }}
                 />
-                <label htmlFor="radio1" className="labelRadio">
+                <label
+                  htmlFor="radio1"
+                  className={`labelRadio ${
+                    truckTrailerChooseError && "labelRadio-error"
+                  }`}
+                >
                   Truck & Trailer
                 </label>
               </div>
@@ -312,11 +454,17 @@ const Rent: React.FC<RentProps> = ({
                   className="inputRadio"
                   onChange={(e) => {
                     if (e.target.checked) {
+                      needToLoginAlert();
                       setRadioResult([false, true, false]);
                     }
                   }}
                 />
-                <label htmlFor="radio2" className="labelRadio">
+                <label
+                  htmlFor="radio2"
+                  className={`labelRadio ${
+                    truckTrailerChooseError && "labelRadio-error"
+                  }`}
+                >
                   Only Truck
                 </label>
               </div>
@@ -328,11 +476,17 @@ const Rent: React.FC<RentProps> = ({
                   className="inputRadio"
                   onChange={(e) => {
                     if (e.target.checked) {
+                      needToLoginAlert();
                       setRadioResult([false, false, true]);
                     }
                   }}
                 />
-                <label htmlFor="radio3" className="labelRadio">
+                <label
+                  htmlFor="radio3"
+                  className={`labelRadio ${
+                    truckTrailerChooseError && "labelRadio-error"
+                  }`}
+                >
                   Only Trailer
                 </label>
               </div>
@@ -348,6 +502,12 @@ const Rent: React.FC<RentProps> = ({
           </div>
         </div>
       </form>
+
+      {!logged && (
+        <div className="ml-auto mr-auto mt-5 text-center text-red-700 font-bold text-2xl">
+          You need to log in to unlock this feature!
+        </div>
+      )}
 
       {!showResults ? (
         <div className="secondFormContainer"> </div>
@@ -377,6 +537,7 @@ const Rent: React.FC<RentProps> = ({
               trailerOrder={trailerOrder}
               vehicles={vehicles}
               trailers={trailers}
+              places={places}
             />
           )}
 
@@ -394,24 +555,61 @@ const Rent: React.FC<RentProps> = ({
       ) : // Only Truck
       showResults.typeOfOrder == 1 ? (
         <div className="secondFormContainer">
-          <VehicleType
-            vehicles={vehicles}
-            places={places}
-            fetchedData={fetchedData}
-            pickupLocation={showResults.pickup.location}
-            setShowProceedWindow={setShowProceedWindow}
-          />
+          {orderStage == 1 ? (
+            <VehicleType
+              vehicles={vehicles}
+              places={places}
+              fetchedData={fetchedData}
+              pickupLocation={showResults.pickup.location}
+              setShowProceedWindow={setShowProceedWindow}
+            />
+          ) : (
+            <OrderResults
+              order={showResults}
+              truckOrder={truckOrder}
+              trailerOrder={trailerOrder}
+              vehicles={vehicles}
+              trailers={trailers}
+              places={places}
+            />
+          )}
+
+          {showProceedWindow && "brand" in showProceedWindow && (
+            <ChooseWindow vehicle={showProceedWindow} ifProceed={ifProceed} />
+          )}
         </div>
       ) : (
         //Only Trailer
         <div className="secondFormContainer">
-          <TrailerType
-            trailers={trailers}
-            places={places}
-            fetchedData={fetchedData}
-            pickupLocation={showResults.pickup.location}
-            setShowProceedWindow={setShowProceedWindow}
-          />
+          {orderStage == 1 ? (
+            <TrailerType
+              trailers={trailers}
+              places={places}
+              fetchedData={fetchedData}
+              pickupLocation={showResults.pickup.location}
+              setShowProceedWindow={setShowProceedWindow}
+            />
+          ) : (
+            <OrderResults
+              order={showResults}
+              truckOrder={truckOrder}
+              trailerOrder={trailerOrder}
+              vehicles={vehicles}
+              trailers={trailers}
+              places={places}
+            />
+          )}
+
+          {showProceedWindow && "brand" in showProceedWindow ? (
+            <ChooseWindow vehicle={showProceedWindow} ifProceed={ifProceed} />
+          ) : (
+            showProceedWindow && (
+              <ChooseTrailerWindow
+                vehicle={showProceedWindow}
+                ifProceed={ifProceed}
+              />
+            )
+          )}
         </div>
       )}
     </div>

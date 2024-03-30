@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url("../node_modules/@fontsource/poppins/");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@100&family=Poppins:wght@100&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* * {
   box-sizing: border-box;
@@ -17,11 +18,18 @@ body {
   height: 100%;
 }
 
-.main-container {
-}
-
 .App-main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.backgroundPhoto {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.4;
+  filter: saturate(0.5) grayscale(50%);
 }

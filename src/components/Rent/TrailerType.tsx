@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleTrailer from "./SingleTrailer";
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 
 interface TrailerTypeProps {
   trailers: {
@@ -11,6 +11,7 @@ interface TrailerTypeProps {
     length: number[];
     available: number[][];
     price: number[];
+    img: string;
   }[];
 
   places: {
@@ -26,7 +27,7 @@ interface TrailerTypeProps {
   pickupLocation: number;
 
   setShowProceedWindow: (
-    value: [RentProps["trailers"][0], boolean, boolean | null] | null
+    value: [OrderParameters["trailers"][0], boolean, boolean | null] | null
   ) => void;
 }
 

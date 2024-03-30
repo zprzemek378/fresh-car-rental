@@ -3,7 +3,7 @@ import "./rent-vehicles-style.css";
 import "../Vehicles/vehicles-style.css";
 import { MdExpandMore } from "react-icons/md";
 
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 
 interface SingleVehicleProps {
   trailer: {
@@ -13,6 +13,7 @@ interface SingleVehicleProps {
     length: number[];
     available: number[][];
     price: number[];
+    img: string;
   };
 
   availability0: {
@@ -38,7 +39,7 @@ interface SingleVehicleProps {
   pickupLocation: number;
 
   setShowProceedWindow: (
-    value: [RentProps["trailers"][0], boolean, boolean | null] | null
+    value: [OrderParameters["trailers"][0], boolean, boolean | null] | null
   ) => void;
 }
 

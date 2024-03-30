@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleVehicle from "./SingleVehicle";
 
-interface VehicleTypeProps {
-  vehicles: {
+interface ITrucks
+  extends Array<{
     id: number;
     brand: string;
     model: string;
@@ -12,24 +12,18 @@ interface VehicleTypeProps {
     available: number[];
     tank: number;
     price: number;
-  }[];
-
-  places: {
+    img: string;
+  }> {}
+interface IPlaces
+  extends Array<{
     id: number;
     city: string;
     address: string;
     phonenumber: number;
     latlng: [number, number];
-  }[];
+  }> {}
 
-  fetchedData: boolean;
-}
-
-const VehicleType: React.FC<VehicleTypeProps> = ({
-  vehicles,
-  places,
-  fetchedData,
-}) => {
+const VehicleType = () => {
   const [collapse, setCollapse] = useState(false);
   const [highlight, setHighlight] = useState([
     false,
@@ -68,13 +62,35 @@ const VehicleType: React.FC<VehicleTypeProps> = ({
     setSortedVehicles([...newSortedVehicles]);
   };
 
-  const [sortedVehicles, setSortedVehicles] = useState<
-    VehicleTypeProps["vehicles"]
-  >([]);
+  const [sortedVehicles, setSortedVehicles] = useState<ITrucks>([]);
+  const [places, setPlaces] = useState<IPlaces>([]);
+
+  const fetchTrailers = async () => {
+    const response = await fetch("http://localhost:3001/trucks");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setSortedVehicles(data);
+  };
+
+  const fetchPlaces = async () => {
+    const response = await fetch("http://localhost:3001/places");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    setPlaces(data);
+  };
 
   useEffect(() => {
-    setSortedVehicles(vehicles);
-  }, [fetchedData]);
+    fetchTrailers();
+    fetchPlaces();
+  }, []);
 
   return (
     <div>

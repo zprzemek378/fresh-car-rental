@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleVehicle from "./SingleVehicle";
-import { RentProps } from "./Rent";
+import { OrderParameters } from "./Rent";
 
 interface VehicleTypeProps {
   vehicles: {
@@ -13,6 +13,7 @@ interface VehicleTypeProps {
     available: number[];
     tank: number;
     price: number;
+    img: string;
   }[];
 
   places: {
@@ -27,7 +28,7 @@ interface VehicleTypeProps {
 
   pickupLocation: number;
 
-  setShowProceedWindow: (value: RentProps["vehicles"][0] | null) => void;
+  setShowProceedWindow: (value: OrderParameters["vehicles"][0] | null) => void;
 }
 
 const VehicleType: React.FC<VehicleTypeProps> = ({

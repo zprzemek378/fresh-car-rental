@@ -1,0 +1,34 @@
+.chooseOrderType {
+  height: 100%;
+  padding: 15px;
+}
+
+.onBacklight {
+  /* filter: brightness(150%); */
+  flex: 1.5;
+  background-color: black;
+  color: white;
+
+  transition: flex 1s, background-color 0.9s, color 0.9s;
+}
+
+.offBacklight {
+  /* filter: brightness(100%); */
+  flex: 1;
+
+  transition: flex 1s, background-color 0.9s, color 0.9s;
+}
+
+.truckReversed {
+  transform: scaleX(-1);
+}
+
+.trailerChooserPhoto {
+  filter: saturate(0.5) grayscale(50%);
+  width: 200px;
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  object-fit: cover;
+}
