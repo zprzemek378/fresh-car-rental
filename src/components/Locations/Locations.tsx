@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MarkerComp from "./MarkerComp";
 import ChangeLocation from "./ChangeLocation";
+import axios from "../../api/axios";
 
 interface LocationsProps {
   setBackgroundImage: (imagePath: string) => void;
@@ -35,14 +36,15 @@ const Locations: React.FC<LocationsProps> = ({ setBackgroundImage }) => {
   const [places, setPlaces] = useState<IPlaces>([]);
 
   const fetchPlaces = async () => {
-    const response = await fetch("http://localhost:3001/places");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    try {
+      const response = await axios.get("http://localhost:3001/places");
+      const data = response.data;
 
-    const data = await response.json();
-    setLatlngCenter([data[0].latlng[0], data[0].latlng[1]]);
-    setPlaces(data);
+      setLatlngCenter([data[0].latlng[0], data[0].latlng[1]]);
+      setPlaces(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
+    }
   };
 
   useEffect(() => {
