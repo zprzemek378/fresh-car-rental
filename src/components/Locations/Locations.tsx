@@ -37,7 +37,7 @@ const Locations: React.FC<LocationsProps> = ({ setBackgroundImage }) => {
 
   const fetchPlaces = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/places");
+      const response = await axios.get("/places");
       const data = response.data;
 
       setLatlngCenter([data[0].latlng[0], data[0].latlng[1]]);
