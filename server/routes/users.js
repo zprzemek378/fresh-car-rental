@@ -17,8 +17,8 @@ const maxAge = 1 * 60 * 60 * 1000;
 
 const jsonFilePath = "server/private/users.json"; //ściezka do users
 fs.readFile(jsonFilePath, "utf-8", async (error, data) => {
-  // const content = await JSON.parse(data);
-  // users.push(...content);
+  const content = await JSON.parse(data);
+  users.push(...content);
   if (error) {
     console.log("Read file error: ", error);
     return;
