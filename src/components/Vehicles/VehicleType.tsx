@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SortElement from "./SortElement";
 import SingleVehicle from "./SingleVehicle";
+import axios from "../../api/axios";
 
 interface ITrucks
   extends Array<{
@@ -66,25 +67,23 @@ const VehicleType = () => {
   const [places, setPlaces] = useState<IPlaces>([]);
 
   const fetchTrailers = async () => {
-    const response = await fetch("http://localhost:3001/trucks");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await axios.get("/trucks");
+      const data = response.data;
+      setSortedVehicles(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
     }
-
-    const data = await response.json();
-
-    setSortedVehicles(data);
   };
 
   const fetchPlaces = async () => {
-    const response = await fetch("http://localhost:3001/places");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await axios.get("/places");
+      const data = response.data;
+      setPlaces(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
     }
-
-    const data = await response.json();
-
-    setPlaces(data);
   };
 
   useEffect(() => {

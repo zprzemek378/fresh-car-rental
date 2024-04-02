@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import OrderElement from "./OrderElement";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { OrderParameters } from "../Rent/Rent";
+import axios from "../../api/axios";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -46,36 +47,33 @@ const MyOrders = () => {
   const [trailers, setTrailers] = useState<OrderParameters["trailers"]>([]);
 
   const fetchVehicles = async () => {
-    const response = await fetch("http://localhost:3001/trucks");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await axios.get("trucks");
+      const data = response.data;
+      setVehicles(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
     }
-
-    const data = await response.json();
-
-    setVehicles(data);
   };
 
   const fetchTrailers = async () => {
-    const response = await fetch("http://localhost:3001/trailers");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await axios.get("/trailers");
+      const data = response.data;
+      setTrailers(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
     }
-
-    const data = await response.json();
-
-    setTrailers(data);
   };
 
   const fetchPlaces = async () => {
-    const response = await fetch("http://localhost:3001/places");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const response = await axios.get("/places");
+      const data = response.data;
+      setPlaces(data);
+    } catch (error: any) {
+      throw new Error(`HTTP error! Status: ${error.response.status}`);
     }
-
-    const data = await response.json();
-
-    setPlaces(data);
   };
 
   const [fetchedData, setFetchedData] = useState<boolean>(false);
