@@ -1,5 +1,7 @@
 # Fresh Car Rental / Fresh Truck Rental
 
+This application was hosted, but the hosting plan has expired, and the application is no longer live.
+
 ### Technologies:
 - React
 - Typescipt
