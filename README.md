@@ -1,6 +1,8 @@
 # Fresh Car Rental / Fresh Truck Rental
 
-This application was hosted, but the hosting plan has expired, and the application is no longer live.
+In the application:
+- [Render](https://render.com/) is used to deploy and manage the application.
+- [MongoDB](https://www.mongodb.com/) is used as a cloud-based NoSQL database to handle and store data.
 
 ### Technologies:
 - React
